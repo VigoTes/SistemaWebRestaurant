@@ -20,15 +20,16 @@ class CabeceraVentaController extends Controller
 
     public function index(Request $Request)
     {
-        $buscarpor = $Request->buscarpor;
+       /*  $buscarpor = $Request->buscarpor;
         $ventas = CabeceraVenta::where('estado', '=','1')
             //->where('nombres','like','%'.$buscarpor.'%')
             ->paginate($this::PAGINATION);
 
         //cuando vaya al index me retorne a la vista
+ */
+        $ventas = [];
 
-
-        return view('tablas.cabeceraventas.index',compact('ventas','buscarpor')); 
+        //return view('tablas.cabeceraventas.index',compact('ventas')); 
 
 
     }
@@ -40,13 +41,13 @@ class CabeceraVentaController extends Controller
      */
     public function create()
     {
-        $cabecera=CabeceraVenta::where('estado', '=','1');
+        /* $cabecera=CabeceraVenta::where('estado', '=','1');
         $producto= Producto::all();
         $tipo=Tipo::all();
         $cliente=Cliente::all();
         $tipou=Tipo::select('tipo_id','descripcion')->orderBy('tipo_id','DESC')->get();                         
-        $parametros=Parametro::findOrFail($tipou[0]->tipo_id);           
-        return view('tablas.cabeceraventas.create',compact('tipo','parametros','cliente','producto'));
+        $parametros=Parametro::findOrFail($tipou[0]->tipo_id);      */      
+        return view('tablas.cabeceraventas.create');
 
      
 

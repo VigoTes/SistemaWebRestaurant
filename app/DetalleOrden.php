@@ -4,19 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Categoria extends Model
+class DetalleOrden extends Model
 {
-    //
-    protected $table = "categoria";
-    protected $primaryKey ="codCategoria";
+    protected $table = "detalle_orden";
+    protected $primaryKey ="codDetalleOrden";
 
     public $timestamps = false;  //para que no trabaje con los campos fecha 
 
 
     // le indicamos los campos de la tabla 
-    protected $fillable = ['nombre','estado'];
-
-    
-
+    protected $fillable = ['codOrden','codProducto','cantidad','precio'];
 
 }

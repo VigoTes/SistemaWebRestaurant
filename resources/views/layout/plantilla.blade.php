@@ -186,11 +186,26 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+          <li class="nav-item">
+            <a href="/mesasOrden" class="nav-link">
+              <i class="far fa-address-card nav-icon"></i>
+              <p>Mostrador</p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="/orden" class="nav-link">
+              <i class="fab fa-free-code-camp"></i>
+              <p>Vista Cocina</p>
+            </a>
+          </li>
+
+
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Tablas
+                Mantenimiento
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -207,6 +222,7 @@
                   <p>Productos</p>
                 </a>
               </li>
+              <!--
               <li class="nav-item">
                 <a href="{{route('cliente.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -225,7 +241,7 @@
                   <p>Ventas</p>
                 </a>
               </li>
-              
+            -->
 
 
             </ul>
@@ -247,21 +263,23 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-                                  {{-- <section class="content-header">
-                                    <div class="container-fluid">
-                                      <div class="row mb-2">
-                                        <div class="col-sm-6">
-                                          <h1>Blank Page</h1>
-                                        </div>
-                                        <div class="col-sm-6">
-                                          <ol class="breadcrumb float-sm-right">
-                                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                            <li class="breadcrumb-item active">Blank Page</li>
-                                          </ol>
-                                        </div>
-                                      </div>
-                                    </div><!-- /.container-fluid -->
-                                  </section> --}}
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+
+            <h5 class="m-0 text-dark"> <strong> Gestion de Ventas</strong></h5>
+   
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Dashboard v1</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
 
     <!-- Main content -->
     <section class="content">
@@ -297,5 +315,14 @@
 <script src="/adminlte/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/adminlte/dist/js/demo.js"></script>
+
+<!-- PARA SOLUCIONAR EL PROBLEMA DE 'funcion(){' EN js--->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+<!-- LIBRERIAS PARA NOTIFICACION DE ELIMINACION--->
+<script src="/adminlte/dist/js/sweetalert.min.js"></script>
+<link rel="stylesheet" href="/adminlte/dist/css/sweetalert.css">
+
+
 </body>
 </html>

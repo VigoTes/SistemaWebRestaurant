@@ -15,13 +15,31 @@ Route::get('/bienvenido', function () {
 
 // usar dd("aaaaaaaaaa"); para debugear GA
 
+/**CATEGORIA */
 Route::resource('categoria', 'CategoriaController');  // es resource pq trabajamos con varias rutas 
-Route::get ('categoria/{id}/confirmar','CategoriaController@confirmar')->name('categoria.confirmar');
+Route::get('/categoria/delete/{id}','CategoriaController@delete');
+
+/**PRODUCTO */
+Route::resource('producto', 'ProductoController');  // es resource pq trabajamos con varias rutas 
+Route::get('/producto/delete/{id}','ProductoController@delete');
+
+
+/**ORDEN */
+Route::resource('orden', 'OrdenController');  // es resource pq trabajamos con varias rutas 
+Route::get ('orden/{id}/next','OrdenController@siguiente')->name('orden.next');
+
+
+Route::get('/mesasOrden','MesaController@listarMesa');
+//Route::get ('categoria/{id}/confirmar','CategoriaController@confirmar')->name('categoria.confirmar');
+
+
+
+
 
 Route::get ('producto/{codproducto}/confirmar','ProductoController@confirmar')->name('producto.confirmar');
 
 
-Route::resource('producto', 'ProductoController');  // es resource pq trabajamos con varias rutas 
+
 
 Route::resource('Escuela', 'EscuelaController');  // es resource pq trabajamos con varias rutas 
 Route::resource('Factultad', 'FacultadController');  // es resource pq trabajamos con varias rutas 

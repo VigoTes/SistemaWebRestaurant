@@ -20,8 +20,8 @@ class CategoriaController extends Controller
     public function index(Request $Request)
     {
         $buscarpor = $Request->buscarpor;
-        $categoria = Categoria::where('estado', '=','1')
-            ->where('descripcion','like','%'.$buscarpor.'%')
+        $categoria = Categoria::where('estado','=',1)
+            ->where('nombre','like','%'.$buscarpor.'%')
             ->paginate($this::PAGINATION);
 
         //cuando vaya al index me retorne a la vista
@@ -43,12 +43,13 @@ class CategoriaController extends Controller
     
 
 
-
+    /*
     public function retornarBienvenido()
     {
         return view ('bienvenido');
 
     }
+    */
 
     
     /**
@@ -59,19 +60,20 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
+        
         $data = request()->validate(
                 [
-                    'descripcion'=>'required|max:30'
+                    'nombre'=>'required|max:100'
 
                 ],[
-                    'descripcion.required'=>'Ingrese descripcion de categoria',
-                    'descripcion.max' => 'Maximo 30 caracteres la descripcion'
+                    'nombre.required'=>'Ingrese nombre de categoria',
+                    'nombre.max' => 'Maximo 100 caracteres la nombre'
                 ]
 
                 );
                 $categoria = new Categoria();
-                $categoria->descripcion=$request->descripcion;
-                $categoria->estado='1';                
+                $categoria->nombre=$request->nombre;
+                $categoria->estado=1;
                 $categoria->save();
                     return redirect()->route('categoria.index')->with('datos','Registro nuevo guardado');
 
@@ -96,14 +98,16 @@ class CategoriaController extends Controller
      */
     public function edit($id)
     {
-        // EDITAR 
+        
         $categoria=Categoria::findOrFail($id);
         return view('tablas.categorias.edit',compact('categoria'));
     }
+    /*
     public function confirmar($id){
         $categoria = Categoria::findOrFail($id); 
         return view('tablas.categorias.confirmar',compact('categoria'));
     }
+    */
     /**
      * Update the specified resource in storage.
      *
@@ -114,16 +118,20 @@ class CategoriaController extends Controller
     public function update(Request $request, $id)
     {
         $data=request()->validate([
-            'descripcion'=>'required|max:30'
+            'nombre'=>'required|max:100'
             ],[
-            'descripcion.required'=>'Ingrese descripcion de categoria',
-            'descripcion.max'=>'Ingrese un maximo de 30 caracteres'
+            'nombre.required'=>'Ingrese nombre de categoria',
+            'nombre.max'=>'Ingrese un maximo de 100 caracteres'
         ]);
-        $categoria=Categoria::findOrFail($id);
-        $categoria->descripcion=$request->descripcion;
-        $categoria->estado='1';
+
+        $categoria=Categoria::find($id);
+        //var_dump($categoria->nombre);
+        $categoria->nombre=$request->nombre;
+        //var_dump($categoria->nombre);
         
         $categoria->save();
+        //var_dump($categoria->nombre);
+        //die();
         return redirect()->route('categoria.index')->with('datos','Registro actualizado');
     }
 
@@ -135,15 +143,15 @@ class CategoriaController extends Controller
      */
     public function destroy($id)
     {
+    }
+
+    public function delete($id)
+    {
         $categoria = Categoria::findOrFail($id);
-        $categoria->estado = '0';
+        $categoria->estado = 0;
         $categoria->save ();
         return redirect() -> route('categoria.index')->with('datos','Registro eliminado!!');
-
-
-
     }
-    
 
 
 }

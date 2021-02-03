@@ -1,7 +1,8 @@
 @extends ('layout.plantilla')
 
 @section('contenido')
-<h3> LISTADO DE CATEGORIAS </h3>
+<div class="container">
+  <h3> LISTADO DE CATEGORIAS </h3>
 
 
     <a href="{{route('categoria.create')}}" class = "btn btn-primary"> 
@@ -46,21 +47,35 @@
 
       
             <tr>
-                <td>{{$itemCategoria->codcategoria  }}</td>
-                <td>{{$itemCategoria->descripcion  }}</td>
+                <td>{{$itemCategoria->codCategoria  }}</td>
+                <td>{{$itemCategoria->nombre  }}</td>
                 <td>
 
 
                         {{-- MODIFICAR RUTAS DE Delete y Edit --}}
-                    <a href="{{route('categoria.edit',$itemCategoria->codcategoria)}}" class = "btn btn-warning">  
-                        <i class="fas fa-edit"> </i> 
-                          Editar
-                    </a>
-
-                    <a href="{{route('categoria.confirmar',$itemCategoria->codcategoria)}}" class = "btn btn-danger"> 
+                    <a href="{{route('categoria.edit',$itemCategoria->codCategoria)}}" class = "btn btn-warning"><i class="fas fa-edit"></i>Editar</a>
+                    <!--
+                    <a href="" class = "btn btn-danger"> 
                         <i class="fas fa-trash-alt"> </i> 
                           Eliminar
                     </a>
+                    -->
+                    <a href="#" class="btn btn-danger" title="Eliminar registro" onclick="swal({//sweetalert
+                          title:'¿Está seguro de eliminar la categoria: {{$itemCategoria->nombre}} ?',
+                          //type: 'warning',  
+                          type: 'warning',
+                          showCancelButton: true,//para que se muestre el boton de cancelar
+                          confirmButtonColor: '#3085d6',
+                          cancelButtonColor: '#d33',
+                          confirmButtonText:  'SI',
+                          cancelButtonText:  'NO',
+                          closeOnConfirm:     true,//para mostrar el boton de confirmar
+                          html : true
+                      },
+                      function(){//se ejecuta cuando damos a aceptar
+                        window.location.href='/categoria/delete/{{$itemCategoria->codCategoria}}';
+                      });"><i class="fas fa-trash-alt"> </i>Eliminar</a>
+
                 </td>
 
             </tr>
@@ -68,7 +83,8 @@
       </tbody>
     </table>
 
-{{-- {{$categoria->links()}} --}}
+ {{$categoria->links()}}
 
 
+</div>
 @endsection
