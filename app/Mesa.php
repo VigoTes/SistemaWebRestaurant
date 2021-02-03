@@ -13,7 +13,7 @@ class Mesa extends Model
 
 
     // le indicamos los campos de la tabla 
-    protected $fillable = ['codSala','nroSillas','nroEnSala'];
+    protected $fillable = ['codSala','nroSillas','nroEnSala','estado'];
 
     
     

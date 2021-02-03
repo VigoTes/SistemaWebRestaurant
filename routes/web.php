@@ -30,6 +30,7 @@ Route::get ('orden/{id}/next','OrdenController@siguiente')->name('orden.next');
 
 
 Route::get('/mesasOrden','MesaController@listarMesa');
+Route::get('/orden/mesa/{id}','OrdenController@ordenMesa');
 //Route::get ('categoria/{id}/confirmar','CategoriaController@confirmar')->name('categoria.confirmar');
 
 

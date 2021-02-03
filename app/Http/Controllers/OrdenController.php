@@ -119,4 +119,9 @@ class OrdenController extends Controller
                 ->route('orden.index')
                 ->with('datos','Orden Actualizada a '.$nombreNuevoEstado);
     }
+
+
+    public function ordenMesa($id){
+        return view('tablas.ordenes.ordenMesa');
+    }
 }
