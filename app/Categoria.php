@@ -14,9 +14,12 @@ class Categoria extends Model
 
 
     // le indicamos los campos de la tabla 
-    protected $fillable = ['nombre','estado'];
+    protected $fillable = ['nombre','estado','codMacroCategoria'];
 
-    
+    public function macroCategoria(){
+        return $this->hasOne('App\MacroCategoria','codMacroCategoria','codMacroCategoria');
+
+}
 
 
 }

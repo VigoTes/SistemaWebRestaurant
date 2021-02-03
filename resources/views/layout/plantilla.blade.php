@@ -200,6 +200,13 @@
             </a>
           </li>
 
+          <li class="nav-item">
+            <a href="/caja" class="nav-link">
+              <i class="fab fa-free-code-camp"></i>
+              <p>Vista Cajero</p>
+            </a>
+          </li>
+
 
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
@@ -262,6 +269,8 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
+
+    {{-- 
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -279,7 +288,7 @@
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
-    </div>
+    </div> --}}
 
     <!-- Main content -->
     <section class="content">
@@ -322,7 +331,5 @@
 <!-- LIBRERIAS PARA NOTIFICACION DE ELIMINACION--->
 <script src="/adminlte/dist/js/sweetalert.min.js"></script>
 <link rel="stylesheet" href="/adminlte/dist/css/sweetalert.css">
-
-
 </body>
 </html>

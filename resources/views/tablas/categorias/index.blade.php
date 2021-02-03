@@ -33,6 +33,7 @@
             <thead class="thead-dark">
               <tr>
                 <th scope="col">Codigo</th>
+                <th scope="col">Tipo</th>
                 <th scope="col">Descripción</th>
                 <th scope="col">Opciones</th>
                 
@@ -48,6 +49,7 @@
       
             <tr>
                 <td>{{$itemCategoria->codCategoria  }}</td>
+                <td>{{$itemCategoria->macroCategoria->nombre  }}</td>
                 <td>{{$itemCategoria->nombre  }}</td>
                 <td>
 

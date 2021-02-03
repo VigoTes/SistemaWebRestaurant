@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Categoria;
+use App\MacroCategoria;
 
 use function GuzzleHttp\Promise\all;
 
@@ -38,7 +39,8 @@ class CategoriaController extends Controller
      */
     public function create()
     {
-        return view ('tablas.categorias.create');
+        $macros=MacroCategoria::all();
+        return view ('tablas.categorias.create',compact('macros'));
     }
     
 
@@ -73,6 +75,7 @@ class CategoriaController extends Controller
                 );
                 $categoria = new Categoria();
                 $categoria->nombre=$request->nombre;
+                $categoria->codMacroCategoria=$request->codMacroCategoria;
                 $categoria->estado=1;
                 $categoria->save();
                     return redirect()->route('categoria.index')->with('datos','Registro nuevo guardado');
@@ -100,7 +103,8 @@ class CategoriaController extends Controller
     {
         
         $categoria=Categoria::findOrFail($id);
-        return view('tablas.categorias.edit',compact('categoria'));
+        $macros=MacroCategoria::all();
+        return view('tablas.categorias.edit',compact('categoria','macros'));
     }
     /*
     public function confirmar($id){
@@ -127,6 +131,7 @@ class CategoriaController extends Controller
         $categoria=Categoria::find($id);
         //var_dump($categoria->nombre);
         $categoria->nombre=$request->nombre;
+        $categoria->codMacroCategoria=$request->codMacroCategoria;
         //var_dump($categoria->nombre);
         
         $categoria->save();

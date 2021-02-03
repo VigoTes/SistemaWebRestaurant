@@ -65,7 +65,7 @@ class Orden extends Model
 
     }
 
-    public function botonAsignado(){ // retorna el boton para pasar al siguiente estado en el orden natural
+    public function iconoEstadoSiguiente(){ // retorna el boton para pasar al siguiente estado en el orden natural
             //pendiente -> preparando ->preparado ->entregada->finalizada
         switch ($this->codEstado) {
             case 1: //estado pendiente, para pasar a preparando
@@ -89,5 +89,34 @@ class Orden extends Model
 
 
     }
+
+    public function iconoEstadoActual(){ // retorna el boton para pasar al siguiente estado en el orden natural
+        //pendiente -> preparando ->preparado ->entregada->finalizada
+    switch ($this->codEstado) {
+
+        case 1: //estado pendiente
+            return 'fas fa-clock';
+            break;
+        case 2: //estado pendiente
+            return 'fas fa-fire';
+            break;           
+        case 3: //estado preparando
+            return 'fas fa-check';
+            break;           
+        case 4: //estado preparado
+            return 'fas fa-check-double'; 
+            break;           
+        case 5: //estado entregado
+            # code...
+            break;           
+            
+
+        default:
+            # code...
+            break;
+    }
+
+
+}
 
 }

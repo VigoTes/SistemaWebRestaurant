@@ -15,6 +15,10 @@ class Mesa extends Model
     // le indicamos los campos de la tabla 
     protected $fillable = ['codSala','nroSillas','nroEnSala','estado'];
 
+    public function sala(){
+        return $this->hasOne('App\Sala','codSala','codSala');
+
+}
     
     
 }

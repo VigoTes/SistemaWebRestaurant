@@ -20,12 +20,12 @@
   <div class="form-group">
     <label for="categoria">Categoria</label>
     <select class="form-control @error('codMacroCategoria') is-invalid @enderror" id="codMacroCategoria" name="codMacroCategoria" >
-      @foreach($macros as $itemMacro)
-        <option value="{{$itemMacro['codMacroCategoria']}}"> 
-            {{$itemMacro['nombre']}}
+      
+        <option value=""> 
+         a
         </option>
 
-      @endforeach
+     
     </select>
   </div>
  

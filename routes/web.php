@@ -26,7 +26,12 @@ Route::get('/producto/delete/{id}','ProductoController@delete');
 
 /**ORDEN */
 Route::resource('orden', 'OrdenController');  // es resource pq trabajamos con varias rutas 
+Route::resource('caja', 'CajaController');  
+Route::get('/caja','OrdenController@listarParaCaja');
+
 Route::get ('orden/{id}/next','OrdenController@siguiente')->name('orden.next');
+Route::get ('orden/{id}/ventanaPago','OrdenController@ventanaPago')->name('orden.ventanaPago');
+
 
 
 Route::get('/mesasOrden','MesaController@listarMesa');
