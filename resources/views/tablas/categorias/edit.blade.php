@@ -21,7 +21,7 @@
       @enderror
     </div>
 
-    <div class="form-group">
+    {{-- <div class="form-group">
       <label for="categoria">Categoria</label>
       <select class="form-control @error('codMacroCategoria') is-invalid @enderror" id="codMacroCategoria" name="codMacroCategoria" >
         @foreach($macros as $itemMacro)
@@ -31,7 +31,7 @@
   
         @endforeach
       </select>
-    </div>
+    </div> --}}
     
     <button type="submit" class="btn btn-primary">Grabar</button>
     <a href="{{route('categoria.index')}}" class="btn btn-danger"><i class="fas fa-ban"></i>Cancelar</a>

@@ -4,7 +4,7 @@
 
 <div class="container">
 
-  <h3> LISTADO DE PEDIDOS PENDIENTES </h3>
+  <h3> LISTADO DE PEDIDOS PENDIENTES PARA EL MESERO</h3>
 
   @if(session('datos'))
     <div class ="alert alert-warning alert-dismissible fade show mt-3" role ="alert">
@@ -52,79 +52,6 @@
                   </select>  
 
                 </div>
-
-
-
-                <div class="col-sm"  style="background-color: white">
-                BBBBBBBBB
-                </div>
-
-
-                <div class="col-sm" style="background-color: brown">
-                  <div class="form-check" style=" height=100%;">
-                    <table  style="height=500px">
-                      <tbody>
-                          <tr>
-                              <td>
-                                <input name="CheckBox_1" id="CheckBox_1"  class="form-check-input" type="checkbox" 
-                                @if($vectorCB[0]=="on")
-                                  checked  
-                                @endif
-                                >
-                              </td>
-                              <td>
-                                <input name="CheckBox_2" id="CheckBox_2"  class="form-check-input" type="checkbox" 
-                                @if($vectorCB[1]=="on")
-                                  checked  
-                                @endif
-                                >
-                              </td>
-                              <td>
-                                <input name="CheckBox_3" id="CheckBox_3"  class="form-check-input" type="checkbox" 
-                                @if($vectorCB[2]=="on")
-                                  checked  
-                                @endif
-                                >
-                              </td>
-                              <td>
-                                <input name="CheckBox_4" id="CheckBox_4"  class="form-check-input" type="checkbox" 
-                                @if($vectorCB[3]=="on")
-                                  checked  
-                                @endif
-                                >
-                              </td>
-                              <td>
-                                <input name="CheckBox_5" id="CheckBox_5"  class="form-check-input" type="checkbox" 
-                                @if($vectorCB[4]=="on")
-                                  checked  
-                                @endif
-                                >
-                              </td>
-                          </tr>
-      
-                          <tr>
-                              <td>
-                                <i class="fas fa-clock fa-xs"> </i>
-                              </td>
-                              <td>
-                                <i class="fas fa-fire fa-xs"> </i>
-                              </td>
-                              <td>
-                                <i class="fas fa-check fa-xs"> </i>
-                              </td>
-                              <td>
-                                <i class="fas fa-check-double fa-xs"> </i>
-                              </td>
-                              <td>
-                                <i class="fas fa-fire fa-xs"> </i>
-                              </td>
-                          </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                
               </div>
 
               <div class="row">
@@ -173,7 +100,7 @@
               
               <td style="text-align: center">{{$itemOrden->getEstado()}} 
                 <br>
-                <i class="{{$itemOrden->iconoEstadoActual()}}"></i>
+                <i class="{{$itemOrden->iconoEstadoSiguiente()}}"></i>
               </td>
               <td>{{$itemOrden->calcularCosto()}}</td>
      
@@ -182,11 +109,11 @@
 
 
 
-                    <a href="{{route('orden.ventanaPago',$itemOrden->codOrden)}}" class = "btn btn-success">  
-                      <i class="fas fa-money-bill-wave"></i>
-                    </a>  
-                  
-                
+                <a href="{{route('orden.next',$itemOrden->codOrden)}}" class = "btn btn-success">  
+                  <i class="{{$itemOrden->iconoEstadoSiguiente()}}"> Entregar</i>
+                </a>  
+                    
+                    
                
               </td>
           </tr>

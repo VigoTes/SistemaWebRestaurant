@@ -12,6 +12,6 @@ class MesaController extends Controller
     {
         $mesas=Mesa::all();
         $salas=Sala::all();
-        return view('tablas.ordenes.registrar',compact('mesas','salas'));
+        return view('modulos.mozo.listarMesas',compact('mesas','salas'));
     }
 }

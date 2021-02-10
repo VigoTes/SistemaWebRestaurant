@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -24,9 +25,15 @@ class UserController extends Controller
                 $password=$request->get('password');
                 if(password_verify($password,$hashp))
                 {
-                    return view('bienvenido');
+
+                    //este attempt es para que el Auth se inicie
+                    if(Auth::attempt($request->only('name','password')))
+                            return view('bienvenido');
+                    
+                    //return view('bienvenido');
                 }
                 else{
+                    
                     return back()->withErrors(['password'=>'Contraseña no válido'])->withInput([request('password')]);
                 }                
             }

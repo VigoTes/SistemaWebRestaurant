@@ -13,5 +13,5 @@ class Empleado extends Model
 
 
     // le indicamos los campos de la tabla 
-    protected $fillable = ['codTipoEmpleado','nombres','apellidos','telefono','fechaContrato','fechaFinContrato','activo'];
+    protected $fillable = ['codTipoEmpleado','nombres','apellidos','telefono','fechaContrato','fechaFinContrato','activo','idUsuario'];
 }

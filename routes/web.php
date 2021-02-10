@@ -27,15 +27,27 @@ Route::get('/producto/delete/{id}','ProductoController@delete');
 /**ORDEN */
 Route::resource('orden', 'OrdenController');  // es resource pq trabajamos con varias rutas 
 Route::resource('caja', 'CajaController');  
-Route::get('/caja','OrdenController@listarParaCaja');
 
+/* LISTAR ORDENES SEGUN PERSPECTIVAS */
+Route::get('/Ordenes/Cocina','OrdenController@listarParaCocina')->name('orden.listarParaCocina');
+Route::get('/Ordenes/Caja','OrdenController@listarParaCaja')->name('orden.listarParaCaja');
+Route::get('/Ordenes/Mesero','OrdenController@listarParaMesero')->name('orden.listarParaMesero');
+
+Route::get('/Salas/Mesero','MesaController@listarMesa')->name('orden.listarSalas');
+
+
+// funcion para pasar al siguiente estado
 Route::get ('orden/{id}/next','OrdenController@siguiente')->name('orden.next');
+//para pagar desde caja
 Route::get ('orden/{id}/ventanaPago','OrdenController@ventanaPago')->name('orden.ventanaPago');
 
+Route::post('/pagarOrden/{id}','OrdenController@pagar')->name('orden.pagar');
 
 
-Route::get('/mesasOrden','MesaController@listarMesa');
 Route::get('/orden/mesa/{id}','OrdenController@ordenMesa');
+Route::post('/listarProductosCategoria/{id}','ProductoController@listarProductosCategoria');
+
+Route::get('/buscarProducto/{id}','ProductoController@buscarProducto');
 //Route::get ('categoria/{id}/confirmar','CategoriaController@confirmar')->name('categoria.confirmar');
 
 

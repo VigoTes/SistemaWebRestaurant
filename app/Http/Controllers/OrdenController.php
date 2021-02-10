@@ -10,14 +10,56 @@ use App\Orden;
 use App\Producto;
 use Illuminate\Http\Request;
 use App\Sala;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Exception;
+
+use App\Cliente;
+use DateTime;
+use Illuminate\Support\Facades\Date;
+
 class OrdenController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index( Request $request)
+    {
+
+    }
+
+    //LISTA SOLAMENTE LAS ORDENES QUE ESTÁN YA PREPARADAS Y QUE DEBEN SER ENTREGADAS A LAS MESAS
+    public function listarParaMesero(Request $request){
+        
+        $codSala = $request->sala; 
+        $buscarpor = $request->buscarpor;
+        if ($codSala != 0) { //si se seleccionó alguna sala
+        
+            $ordenes = Orden::where('codEstado','<','5')
+            ->where('mesa.codSala','=',$codSala)
+            ->where('observaciones','like','%'.$buscarpor.'%')
+            ->where('codEstado','=','3')
+            ->join('mesa', 'orden.codMesa', '=', 'mesa.codMesa')
+            ->orderBy('codEstado','ASC')  
+            ->get();
+            
+        }else{ //si se selecciono todas las salas
+        
+            $ordenes = Orden::where('codEstado','<','5')
+            ->where('observaciones','like','%'.$buscarpor.'%')
+            ->where('codEstado','=','3')
+            ->orderBy('codEstado','ASC')  
+            ->get();
+
+        }
+        
+        
+        $listaSalas = Sala::All();
+        return view('modulos.mozo.listarOrdenes',compact('ordenes','listaSalas','codSala'));
+        
+    }
+
+    //LISTA PARA EL COCINERO
+    public function listarParaCocina( Request $request)
     {
         
         $CB1 = $request->CheckBox_1;
@@ -73,11 +115,11 @@ class OrdenController extends Controller
             $ordenes=$ordenes->where('codEstado','!=','5');
         }
         $listaSalas = Sala::All();
-        return view('tablas.ordenes.index',compact('ordenes','listaSalas','codSala','vectorCB'));
+        return view('modulos.cocina.listarOrdenes',compact('ordenes','listaSalas','codSala','vectorCB'));
     }
 
 
-
+    //Solo debe listar las que ya están para pagar 
     public function listarParaCaja(Request $request)
     {
         
@@ -87,9 +129,6 @@ class OrdenController extends Controller
         }else{
             $vectorCB=array("on","on","on","on","on");
         }
-        
-        
-
         
         $codSala = $request->sala; 
         $buscarpor = $request->buscarpor;
@@ -113,25 +152,37 @@ class OrdenController extends Controller
         
         
         $listaSalas = Sala::All();
-        return view('tablas.ordenes.ordenesParaPagar',compact('ordenes','listaSalas','codSala','vectorCB'));
+        return view('modulos.caja.listarOrdenes',compact('ordenes','listaSalas','codSala','vectorCB'));
     }
 
     public function ventanaPago($id)
     {
         $orden = Orden::findOrFail($id);
         $listaOrdenes = DetalleOrden::where('codOrden','=',$id)->get();
+        $listaClientes = Cliente::All();
 
-
-        return view('tablas.ordenes.pagar',compact('orden'));
-
-
-
-
+        return view('modulos.caja.pagar',compact('orden','listaClientes'));
 
     }
 
 
+    public function pagar(Request $request, $id){ //id de la orden a pagar
+        $orden = Orden::findOrFail($id);
+        $orden->costoTotal = $request->montoOrden;
+        $orden->montoPagado = $request->sencilloCliente;
+        $orden->cambioDevuelto = $request->sencilloDevuelto;
+        $orden->codEstado = 5; //seteamos el estado en pagado
+        $orden->fechaHoraPago = Carbon::now()->subHours(5);
+        $orden->codTipoCDP = $request->tipoCDP;
+        //FALTA IMPLEMENTAR LO DE REGISTRO CAJA
+        $orden->codRegistroCaja = '1';
 
+        $orden->save();
+        
+
+        return redirect()->route('orden.listarParaCaja')
+        ->with('datos','Orden N°'.$orden->codOrden.' Pagada');
+    }
 
 
 
@@ -151,9 +202,61 @@ class OrdenController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    
     public function store(Request $request)
     {
-        //
+        date_default_timezone_set('America/Lima');
+        try {
+            DB::beginTransaction();        
+            /* Grabar Cabecera */
+            $orden=new Orden();
+            $orden->codMesa=$request->codMesa;
+            $orden->DNI=null;
+            $orden->codEmpleadoMesero=$request->codMeseroActual;
+            $orden->codEstado=1;
+            $orden->observaciones=$request->txtobservaciones;
+            $orden->descuento=null;
+            $orden->codMedioPago=null;
+            $orden->codTipoPago=null;
+            $orden->fechaHoraCreacion=new DateTime();
+            $orden->fechaHoraPago=null;
+            $orden->codTipoCDP=null;
+            $orden->codRegistroCaja=null;
+            $orden->costoTotal=$request->total;
+            $orden->montoPagado=null;
+            $orden->cambioDevuelto=null;
+
+            $orden->save();
+
+            /* Grabar Detalle */    
+            $producto_id = $request->get('cod_producto');
+            $cantidad = $request->get('cantidad');
+            $pventa = $request->get('pventa');            
+
+            $cont = 0;
+
+            while ($cont<count($producto_id)) {
+                $detalle=new DetalleOrden();
+                $detalle->codOrden=$orden->codOrden;
+                $detalle->cantidad=$cantidad[$cont];
+                $detalle->precio=$pventa[$cont];
+                $detalle->codProducto=$producto_id[$cont];
+                $detalle->save();
+                $cont=$cont+1;
+            }
+
+            $mesa=Mesa::find($request->codMesa);
+            $mesa->estado=0;
+            $mesa->save();
+            
+            DB::commit();                
+            return redirect('/Salas/Mesero');
+        } 
+        catch (Exception $e) {
+            DB::rollback();
+        }
+                
     }
 
     /**
@@ -200,7 +303,7 @@ class OrdenController extends Controller
     {
         //
     }
- 
+    
     public function siguiente($id){
         $orden = Orden::findOrFail($id);
         $orden->codEstado = $orden->codEstado + 1;
@@ -208,17 +311,19 @@ class OrdenController extends Controller
 
         $nombreNuevoEstado = $orden->getEstado(); 
 
+        return Redirect::back()->with('datos','Orden actualizada a'.$nombreNuevoEstado);
         return redirect()
-                ->route('orden.index')
+                ->route('orden.listarParaCocina')
                 ->with('datos','Orden Actualizada a '.$nombreNuevoEstado);
     }
-
+    
 
     public function ordenMesa($id){
         $mesa=Mesa::find($id);
-        $categorias1=Categoria::where('estado','=',1)->where('codMacroCategoria','=',1)->get();
+        $categorias1=Categoria::where('estado','=',1)->get();
         $productos=Producto::where('estado','=',1)->get();
         $meseros=Empleado::where('codTipoEmpleado','=',3)->get();
-        return view('tablas.ordenes.ordenMesa',compact('mesa','categorias1','productos','meseros'));
+
+        return view('modulos.mozo.crearOrden',compact('mesa','categorias1','productos','meseros'));
     }
 }

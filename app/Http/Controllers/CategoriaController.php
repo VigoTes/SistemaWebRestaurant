@@ -103,8 +103,8 @@ class CategoriaController extends Controller
     {
         
         $categoria=Categoria::findOrFail($id);
-        $macros=MacroCategoria::all();
-        return view('tablas.categorias.edit',compact('categoria','macros'));
+/*         $macros=MacroCategoria::all(); */
+        return view('tablas.categorias.edit',compact('categoria'));
     }
     /*
     public function confirmar($id){

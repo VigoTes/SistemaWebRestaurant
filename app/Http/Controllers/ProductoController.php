@@ -154,4 +154,17 @@ class ProductoController extends Controller
           return redirect()->route('producto.index')->with('datos','Registro Eliminado!');
 
     }
+
+    //PARA ajax
+    public function listarProductosCategoria(Request $request,$id){
+        $productos=Producto::where('codCategoria','=',$id)->get();
+        return response()->json(['productos'=>$productos]);
+    }
+
+    //PARA get
+    public function buscarProducto($id){
+        $producto=Producto::find($id);
+        return $producto;
+        //return response()->json(['producto'=>$producto]);
+    }
 }
