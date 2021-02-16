@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use App\Empleado;
-
+use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     public function logearse(Request $request)
@@ -24,36 +24,42 @@ class UserController extends Controller
             if($query->count()!=0){
                 $hashp=$query[0]->password;
                 $password=$request->get('password');
+                error_log('-----------------------------------query:'.$hashp.'                
+                
+                
+                '.Hash::make($password));
                 if(password_verify($password,$hashp))
                 {
-                    Auth::attempt($request->only('usuario','password'));
-                    if($name=='admin'){//INGRESO DEL ADMIN
-                        return redirect()->route('indexPrincipal');
-                    }
-                    //USER NORMAL
-                    else{
-                        //este attempt es para que el Auth se inicie
-                       
-                        $rutaPaIr = '';
-                        $tipo = Empleado::getEmpleadoLogeado()->codTipoEmpleado;
-                        switch ($tipo) {
-                            case '1': //COCINERO
-                                $rutaPaIr = 'orden.listarParaCocina';
-                                break;
-                            case '2': //CAJERO
-                                $rutaPaIr = 'orden.listarParaCaja';
-                                break;
-                            case '3': //MESERO
-                                $rutaPaIr = 'orden.listarSalas';
-                                break;
-                                        
-                            default:
-                            $rutaPaIr = 'indexPrincipal';
-                                break;
+                    
+                    if(Auth::attempt($request->only('usuario','password')))
+                        if($name=='admin'){//INGRESO DEL ADMIN
+                            return redirect()->route('indexPrincipal');
                         }
+                        //USER NORMAL
+                        else{
+                            //este attempt es para que el Auth se inicie
+                        
+                            $rutaPaIr = '';
+                            error_log('auth:'.Auth::id());
+                            $tipo = Empleado::getEmpleadoLogeado()->codTipoEmpleado;
+                            switch ($tipo) {
+                                case '1': //COCINERO
+                                    $rutaPaIr = 'orden.listarParaCocina';
+                                    break;
+                                case '2': //CAJERO
+                                    $rutaPaIr = 'orden.listarParaCaja';
+                                    break;
+                                case '3': //MESERO
+                                    $rutaPaIr = 'orden.listarSalas';
+                                    break;
+                                            
+                                default:
+                                $rutaPaIr = 'indexPrincipal';
+                                    break;
+                            }
 
-                        return redirect()->route($rutaPaIr);
-                    }
+                            return redirect()->route($rutaPaIr);
+                        }
 
 
                     

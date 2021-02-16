@@ -19,6 +19,7 @@ class EmpleadoController extends Controller
                 inner join usuario u on e.idUsuario = u.id
                 inner join tipo_empleado te on te.codTipoEmpleado = e.codTipoEmpleado
                 where e.activo='1'
+                order by e.codEmpleado, te.nombrePuesto
         ");
         $buscarpor = '';
         return view('tablas.empleados.index',compact('lista','buscarpor'));
@@ -32,12 +33,68 @@ class EmpleadoController extends Controller
 
     }
 
+    public function edit($idEmpleado){
+        $empleado = Empleado::findOrFail($idEmpleado);
+        $usuario = User::findOrFail($empleado->idUsuario);
+        $listaPuestos = TipoEmpleado::All();
+        return view('tablas.empleados.edit',compact('listaPuestos','empleado','usuario'));
+
+
+    }
+
+    public function update(Request $request,$idEmpleado){
+        /*  */
+
+        
+        try {
+            DB::beginTransaction();
+            
+            $empleado = Empleado::findOrFail($idEmpleado);
+
+            $user  = User::findOrFail($empleado->idUsuario);
+            $user->usuario = $request->usuario;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->contraseña);
+            
+            $user->save();
+
+
+            $empleado->nombres = $request->nombres;
+            $empleado->apellidos = $request->apellidos;
+            $empleado->telefono = $request->telefono;
+            $empleado->fechaContrato = $request->fechaI;
+            $empleado->fechaFinContrato = $request->fechaF;
+            $empleado->activo = '1';
+            $empleado->codTipoEmpleado = $request->codTipoEmpleado;
+            $empleado->idUsuario=$empleado->idUsuario;
+			$empleado->save();
+            DB::commit();
+            return redirect()->route('empleados.ver')->with('datos','¡Empleado '.$empleado->nombres.' Actualizado!');
+
+            
+        } catch (\Throwable $th) {
+            //throw $th;
+            error_log('HA OCURRIDO UN ERRO EN EMPLEADO CONTROLLER UPDATE
+            
+            '.$th.'
+
+            
+            ');
+            DB::rollBack();
+        }
+
+
+
+
+
+
+    }
 
     public function delete($idEmpleado){
         $e = Empleado::findOrFail($idEmpleado);
         //desactivamos el empleado
         $user = User::findOrFail($e->idUsuario);
-        $e->estado = '0';
+        $e->activo = '0';
         $e->idUsuario='-1';
         //y borramos su usuario
         $user->delete();
@@ -47,19 +104,21 @@ class EmpleadoController extends Controller
 
     }
 
+
+
     public function store(Request $request){
 
         try {
             DB::beginTransaction();
-        
+            
 
             $user  = new User();
             $user->usuario = $request->usuario;
             $user->email = $request->email;
-            $user->password = Hash::Make($request->password);
+            $user->password = Hash::make($request->contraseña);
             
             $user->save();
-            
+
 
             $empleado = new Empleado();
             $empleado->nombres = $request->nombres;
@@ -71,10 +130,10 @@ class EmpleadoController extends Controller
             $empleado->codTipoEmpleado = $request->codTipoEmpleado;
             $empleado->idUsuario=(User::latest('id')->first())->id;
 			$empleado->save();
-
+            DB::commit();
             return redirect()->route('empleados.ver');
 
-            DB::commit();
+            
         } catch (\Throwable $th) {
             //throw $th;
             error_log('HA OCURRIDO UN ERRO EN EMPLEADO CONTROLLER STORE

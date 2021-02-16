@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link rel="stylesheet" href="/adminlte/dist/css/sweetalert.css">
 
   @yield('estilos')
 
@@ -258,6 +259,8 @@
 <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
  @yield('script')
 <!-- AdminLTE App -->
 <script src="/adminlte/dist/js/adminlte.min.js"></script>
@@ -267,14 +270,18 @@
 <!-- PARA SOLUCIONAR EL PROBLEMA DE 'funcion(){' EN js--->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
+
+<!-- SI NO FUNCIONA EL SELECT ESPECIOAL -> DESCOMENTA ESTO
+<script src="/select2/bootstrap-select.min.js"></script>   
+-->
+
+
 <!-- LIBRERIAS PARA NOTIFICACION DE ELIMINACION--->
 <script src="/adminlte/dist/js/sweetalert.min.js"></script>
-<link rel="stylesheet" href="/adminlte/dist/css/sweetalert.css">
-
-<script src="/select2/bootstrap-select.min.js"></script>   
 
 <script src="/calendario/js/bootstrap-datepicker.min.js"></script>
 <script src="/calendario/locales/bootstrap-datepicker.es.min.js"></script>
+
 
 
 </body>

@@ -127,18 +127,25 @@ class Orden extends Model
     }
 
     public function mesero(){
+        
+        return Empleado::findOrFail($this->codEmpleadoMesero);
         return $this->hasOne('App\Empleado','codEmpleado','codEmpleadoMesero');
     }
     public function cliente(){
+        return Cliente::findOrFail($this->DNI);
         return $this->hasOne('App\Cliente','DNI','DNI');
     }
     public function tipoCDP(){
+
+        return TipoCDP::findOrFail($this->codTipoCDP);
         return $this->hasOne('App\TipoCDP','codTipoCDP','codTipoCDP');
     }
     public function tipoPago(){
+        return TipoPago::findOrFail($this->codTipoPago);
         return $this->hasOne('App\TipoPago','codTipoPago','codTipoPago');
     }
     public function medioPago(){
+        return MedioPago::findOrFail($this->codMedioPago);
         return $this->hasOne('App\MedioPago','codMedioPago','codMedioPago');
     }
 

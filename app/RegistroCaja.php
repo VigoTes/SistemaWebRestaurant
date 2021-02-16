@@ -16,4 +16,9 @@ class RegistroCaja extends Model
     protected $fillable = ['fechaHoraApertura','fechaHoraCierre','saldoApertura'
         ,'saldoCierre','diferencia','codCaja','codEmpleadoCajero'];
 
+
+    public function caja(){
+        return $this->hasOne('App\Caja','codCaja','codCaja');
+
+    }
 }

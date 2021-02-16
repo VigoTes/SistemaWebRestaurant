@@ -19,7 +19,7 @@
     <div class="container-fluid">
         <div class="card card-primary card-outline">
             <div class="card-header">
-                <h3 class="card-title">Gestion de Arqueo de Caja</h3>
+                <h3 class="card-title">Gestion de Arqueo de Caja : Apertura de Caja</h3>
             </div> <!-- /.card-body -->
             <div class="card-body">
                 <div class="form-group row">

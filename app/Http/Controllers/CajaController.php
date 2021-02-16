@@ -21,7 +21,13 @@ class CajaController extends Controller
         $registros=RegistroCaja::where('codEmpleadoCajero','=',Auth::user()->empleado->codEmpleado)->where('estado','=',1)->get();
         if(count($registros)>0){
             $ordenes=Orden::where('codRegistroCaja','=',$registros[0]->codRegistroCaja)->where('estadoPago','=',1)->get();
-            return view('modulos.caja.listarComprasCaja',compact('ordenes'));
+            $total=0;
+            foreach ($ordenes as $itemorden) {
+                $total+=$itemorden->costoTotal;
+            }
+            $total+=$registros[0]->saldoApertura;
+            $registro=$registros[0];
+            return view('modulos.caja.listarComprasCaja',compact('ordenes','registro','total'));
         }else{
             $cajas=Caja::all();
             $fechaHoraActual=new DateTime();

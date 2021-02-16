@@ -53,7 +53,7 @@
         {{--     varQuePasamos  nuevoNombre                        --}}
         @foreach($lista as $itemlista)
 
-      
+          
             <tr>
                 <td>{{$itemlista->codEmpleado  }}</td>
                 <td>{{$itemlista->nombrePuesto}}</td>
@@ -70,7 +70,7 @@
 
 
                         {{-- MODIFICAR RUTAS DE Delete y Edit --}}
-                    <a href="" class = "btn btn-warning"><i class="fas fa-edit"></i>Editar</a>
+                    <a href="{{route('empleados.edit',$itemlista->codEmpleado)}}" class = "btn btn-warning"><i class="fas fa-edit"></i>Editar</a>
                     <!--
                     <a href="" class = "btn btn-danger"> 
                         <i class="fas fa-trash-alt"> </i> 
@@ -78,7 +78,7 @@
                     </a>
                     -->
                     <a href="#" class="btn btn-danger" title="Eliminar registro" onclick="swal({//sweetalert
-                          title:'¿Está seguro de eliminar la lista: {{$itemlista->nombres}} ?',
+                          title:'¿Está seguro de eliminar al empleado: {{$itemlista->nombres}} ?',
                           //type: 'warning',  
                           type: 'warning',
                           showCancelButton: true,//para que se muestre el boton de cancelar

@@ -3,6 +3,7 @@
 use App\Empleado;
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\Hash;
 /* RUTAS PARA INGRESO Y REGISTRO DE USUARIO Y CLIENTE */
 
 Route::post('/ingresar', 'UserController@logearse')->name('user.logearse');  //esta es para cuando le damos al boton Ingresar
@@ -30,6 +31,9 @@ Route::get('/categoria/delete/{id}','CategoriaController@delete');
 Route::resource('producto', 'ProductoController');  // es resource pq trabajamos con varias rutas 
 Route::get('/producto/delete/{id}','ProductoController@delete');
 
+Route::get('/gagaa/',function(){
+return Hash::make('hola');
+});
 
 /**ORDEN */
 Route::resource('orden', 'OrdenController');  // es resource pq trabajamos con varias rutas 
@@ -42,7 +46,9 @@ Route::resource('caja', 'CajaController');
 Route::get('/empleados/ver','EmpleadoController@listar')->name('empleados.ver');
 Route::get('/empleados/verCrear','EmpleadoController@verCrear')->name('empleados.verCrear');
 Route::post('/empleados/nuevo','EmpleadoController@store')->name('empleados.store');
-Route::post('/empleados/delete','EmpleadoController@delete')->name('empleados.delete');
+Route::get('/empleados/delete/{id}','EmpleadoController@delete')->name('empleados.delete');
+Route::get('/empleados/edit/{id}','EmpleadoController@edit')->name('empleados.edit');
+Route::post('/empleados/update/{id}','EmpleadoController@update')->name('empleados.update');
 
 
 /* LISTAR ORDENES SEGUN PERSPECTIVAS */
