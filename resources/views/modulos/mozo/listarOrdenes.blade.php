@@ -24,21 +24,20 @@
   
 
 
-  <nav class = "navbar float-right" style="background-color:green; width:100%"> {{-- PARA MANDARLO A LA DERECHA --}}
-          <form class="form-inline my-2 my-lg-0" action="{{route('orden.index')}}">
+        <form  action="{{route('orden.index')}}" style="margin-bottom: 20px;" >
 
             <input type="hidden" id="indicador" name="indicador" value="1">
 
             <div class="container">
               <div class="row">
-
-                <div class="col-sm"  style="background-color: red">
-                  <label for="sala">Sala:</label>
+                <div class="col-sm"></div>
+                {{-- <div class="col-sm"></div>
+                 --}}
+                <div class="col-sm" >
+                  <label for="sala" style="float: right">Sala:</label>
                 </div>
-                <div class="col-sm"  style="background-color: red">
-                  
+                <div class="col" >
                   <select class="form-control mr-sm-4"  id="sala" name="sala" value="{{$codSala}}">
-                    
                     <option value="0">Todas las salas</option>  
                     @foreach($listaSalas as $itemSala)
                         <option value="{{$itemSala->codSala}}" 
@@ -52,14 +51,16 @@
                   </select>  
 
                 </div>
-              </div>
-
-              <div class="row">
-                <div class="col-sm"  style="background-color: white">
+              
+                <div class="col">
                   <input class="form-control mr-sm-1" type="search" placeholder="Buscar por nombre" 
                     aria-label="Search" id="buscarpor" name = "buscarpor" value =""  >
-                  <button class="btn btn-success my-2 my-sm-0" type="submit"  >Buscar</button>
+                    
                 </div>
+                <div class="col-sm">
+                  <button class="btn btn-success my-2 my-sm-0" type="submit"  > <i class="fas fa-search"></i> Buscar</button>
+                </div>
+
               </div>
 
 
@@ -68,7 +69,6 @@
             
 
         </form>
-  </nav>
 
   
 

@@ -60,4 +60,26 @@ class Empleado extends Model
 
     }
 
+
+    public static function getNombreFoto(){
+        $emp    = Empleado::where('idUsuario','=' ,Auth::id())->first();
+        switch($emp->codTipoEmpleado){
+            case '1': //cocinero
+                $nombre='chef.png';
+                break;
+
+            case '2': //cajero
+                $nombre='caja.jpg';
+                break;
+
+            case '3': //mesero
+                $nombre='mozo.png';
+                break;
+        
+                    
+
+        }
+        return $nombre;
+
+    }
 }

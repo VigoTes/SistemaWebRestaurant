@@ -14,12 +14,14 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Exception;
-
+use App\Parametro;
 use App\Cliente;
 use DateTime;
 use Illuminate\Support\Facades\Date;
 use PhpParser\Node\Stmt\TryCatch;
 use Throwable;
+
+use Barryvdh\DomPDF\Facade as PDF;
 
 class OrdenController extends Controller
 {
@@ -219,6 +221,7 @@ class OrdenController extends Controller
             $orden->codMedioPago=$request->medioPago;
             $orden->estadoPago=1;
 
+            $orden->nroCDP = $request->nroSerie;
             $orden->costoTotal = $request->montoOrden;
             $orden->montoPagado = $request->sencilloCliente;
             $orden->cambioDevuelto = $request->sencilloDevuelto;
@@ -229,6 +232,7 @@ class OrdenController extends Controller
 
             $orden->save();
             
+            Parametro::pasarASiguiente($request->tipoCDP);
             DB::commit();        
             return redirect()->route('orden.listarParaCaja')
             ->with('datos','Orden N°'.$orden->codOrden.' Pagada');
@@ -293,6 +297,7 @@ class OrdenController extends Controller
             $orden->montoPagado=null;
             $orden->cambioDevuelto=null;
             $orden->estadoPago='0';
+            
 
             $orden->save();
 
@@ -449,5 +454,23 @@ class OrdenController extends Controller
         $meseros=Empleado::where('codTipoEmpleado','=',3)->get();
 
         return view('modulos.mozo.crearOrden',compact('mesa','categorias1','productos','meseros'));
+    }
+
+
+    public function generarCDP(){
+
+        //COMANDO PARA EL COMPLEMENTO PARA PDF
+        //composer require barryvdh/laravel-dompdf
+        //COMPOSER: es un gestor para dependencias de laravel en la nube (se guarda en vendor)
+
+        //$pdf = \PDF::loadView('modulos.caja.CDP')->setPaper(array(0, 0, 301, 623.622), 'portrait');
+        $pdf = \PDF::loadView('modulos.caja.CDP');
+        $pdf->setPaper(array(0, 0, 301, 623.622), 'portrait');
+        //$pdf->set_option('defaultFont', 'Courier');
+        
+        
+        //var_dump($data[0]->elementos->descripcionElemento);
+
+        return $pdf->download('XDXD.pdf');
     }
 }

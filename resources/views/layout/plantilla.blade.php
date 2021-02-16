@@ -73,11 +73,13 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 
-        <div class="image">
-          <img src="/adminlte/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
+        
      
         @if(Auth::id()!='') {{-- Si está logeado y no es admin --}}
+        <div class="image">
+          <img src="/img/{{App\Empleado::getNombreFoto()}}" class="img-circle elevation-4" alt="User Image">
+        </div>
+
         <div class="info">
           <a href="#" class="d-block">
            {{ App\Empleado::getEmpleadoLogeado()->getNombreCompleto()}}
@@ -96,12 +98,19 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+          {{-- 
+              1 cocinero2 cajerpo 3 mesero
+
+            --}}
+
+          @if( App\Empleado::getEmpleadoLogeado()->codTipoEmpleado=='3' || Auth::id()=='1'  ) {{-- admin 1 --}} 
           <li class="nav-item">
             <a href="{{route('orden.listarSalas')}}" class="nav-link">
               <i class="fab fa-free-code-camp"></i>
               <p>Vista Mesero Salas</p>
             </a>
           </li>
+          
 
           <li class="nav-item">
             <a href="{{route('orden.listarParaMesero')}}" class="nav-link">
@@ -109,15 +118,20 @@
               <p>Vista Mesero Ordenes</p>
             </a>
           </li>
+          @endif
+          
           
 
+          @if( App\Empleado::getEmpleadoLogeado()->codTipoEmpleado=='1'  || Auth::id()=='1')
           <li class="nav-item">
             <a href="{{route('orden.listarParaCocina')}}" class="nav-link">
               <i class="fab fa-free-code-camp"></i>
               <p>Vista Cocina</p>
             </a>
           </li>
+          @endif
 
+          @if( App\Empleado::getEmpleadoLogeado()->codTipoEmpleado=='2'  || Auth::id()=='1')  
           <li class="nav-item">
             <a href="{{route('orden.listarParaCaja')}}" class="nav-link">
               <i class="fab fa-free-code-camp"></i>
@@ -128,11 +142,12 @@
           <li class="nav-item">
             <a href="{{route('caja.index')}}" class="nav-link">
               <i class="fab fa-free-code-camp"></i>
-              <p>Visualizar Cajero</p>
+              <p>Cuadre de Caja</p>
             </a>
           </li>
-          
-          
+          @endif
+
+          @if(Auth::id()=='1')
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -160,30 +175,8 @@
                   <p>Empleados</p>
                 </a>
               </li>
-              
-              <!--
-              <li class="nav-item">
-                <a href="{{route('cliente.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Cliente</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{route('unidad.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Unidades</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{route('cabeceraventa.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Ventas</p>
-                </a>
-              </li>
-            -->
-
-
             </ul>
+          @endif
 
           </li>
           <li class="nav-item">

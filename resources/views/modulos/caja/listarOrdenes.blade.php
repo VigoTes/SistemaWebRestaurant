@@ -24,18 +24,18 @@
   
 
 
-  <nav class = "navbar float-right" style="background-color:green; width:100%"> {{-- PARA MANDARLO A LA DERECHA --}}
-          <form class="form-inline my-2 my-lg-0" action="{{route('orden.index')}}">
+
+          <form style="margin-bottom: 20px" action="{{route('orden.index')}}">
 
             <input type="hidden" id="indicador" name="indicador" value="1">
 
             <div class="container">
               <div class="row">
-
-                <div class="col-sm"  style="background-color: red">
-                  <label for="sala">Sala:</label>
+                <div class="col"> </div>
+                <div class="col-sm">
+                  <label for="sala" style="float:right">Sala:</label>
                 </div>
-                <div class="col-sm"  style="background-color: red">
+                <div class="col-sm"  >
                   
                   <select class="form-control mr-sm-4"  id="sala" name="sala" value="{{$codSala}}">
                     
@@ -52,12 +52,14 @@
                   </select>  
 
                 </div>
-              </div>
-
-              <div class="row">
-                <div class="col-sm"  style="background-color: white">
+              
+                <div class="col-sm">
                   <input class="form-control mr-sm-1" type="search" placeholder="Buscar por nombre" 
                     aria-label="Search" id="buscarpor" name = "buscarpor" value =""  >
+                  
+                </div>
+
+                <div class="col">
                   <button class="btn btn-success my-2 my-sm-0" type="submit"  >Buscar</button>
                 </div>
               </div>
@@ -68,7 +70,6 @@
             
 
         </form>
-  </nav>
 
   
 
@@ -114,9 +115,11 @@
                 @if($itemOrden->estadoPago=='0')
                 <a href="{{route('orden.ventanaPago',$itemOrden->codOrden)}}" class = "btn btn-success">  
                   <i class="fas fa-money-bill-wave"></i>
-                </a>  
+                </a>
                 @endif
-                    
+                <a href="/generarCDP" class = "btn btn-info">  
+                  <i class="fas fa-file-download"></i>
+                </a>
                     
                 
                

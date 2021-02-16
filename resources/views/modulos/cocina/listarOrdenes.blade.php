@@ -15,28 +15,16 @@
     </div>
   @ENDIF
 
-
-  
-
-
-
-  
-  
-
-
-  <nav class = "navbar float-right" style="background-color:green; width:100%"> {{-- PARA MANDARLO A LA DERECHA --}}
           <form class="form-inline my-2 my-lg-0" action="{{route('orden.index')}}">
 
             <input type="hidden" id="indicador" name="indicador" value="1">
 
             <div class="container">
               <div class="row">
-
-                <div class="col-sm"  style="background-color: red">
+                <div class="col-sm">
                   <label for="sala">Sala:</label>
                 </div>
-                <div class="col-sm"  style="background-color: red">
-                  
+                <div class="col-sm"  >
                   <select class="form-control mr-sm-4"  id="sala" name="sala" value="{{$codSala}}">
                     
                     <option value="0">Todas las salas</option>  
@@ -50,17 +38,13 @@
                         </option>                                 
                     @endforeach    
                   </select>  
-
                 </div>
 
 
-
-                <div class="col-sm"  style="background-color: white">
-                BBBBBBBBB
+                <div class="col">
+                  <label for="">Filtros de ordenes:</label>
                 </div>
-
-
-                <div class="col-sm" style="background-color: brown">
+                <div class="col-sm" >
                   <div class="form-check" style=" height=100%;">
                     <table  style="height=500px">
                       <tbody>
@@ -125,12 +109,14 @@
                 </div>
 
                 
-              </div>
-
-              <div class="row">
-                <div class="col-sm"  style="background-color: white">
+              
+                <div class="col-sm">
                   <input class="form-control mr-sm-1" type="search" placeholder="Buscar por nombre" 
                     aria-label="Search" id="buscarpor" name = "buscarpor" value =""  >
+                  
+                </div>
+
+                <div class="col">
                   <button class="btn btn-success my-2 my-sm-0" type="submit"  >Buscar</button>
                 </div>
               </div>
@@ -141,7 +127,6 @@
             
 
         </form>
-  </nav>
 
   
 

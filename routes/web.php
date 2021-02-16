@@ -21,7 +21,14 @@ Route::get('/', function () {
 })->name('indexPrincipal');
 
 
-// usar dd("aaaaaaaaaa"); para debugear GA
+
+/* RUTAS SERVICIOS */
+Route::get('/obtenerParametro/{id}','ParametroController@obtener')->name('parametros.obtener');
+
+
+
+
+
 
 /**CATEGORIA */
 Route::resource('categoria', 'CategoriaController');  // es resource pq trabajamos con varias rutas 
@@ -68,7 +75,7 @@ Route::get ('orden/{id}/finalizar','OrdenController@finalizar')->name('orden.fin
 Route::get ('orden/{id}/ventanaPago','OrdenController@ventanaPago')->name('orden.ventanaPago');
 
 Route::post('/pagarOrden/{id}','OrdenController@pagar')->name('orden.pagar');
-
+Route::get('/generarCDP','OrdenController@generarCDP');
 
 Route::get('/orden/mesa/{id}','OrdenController@ordenMesa');
 Route::post('/listarProductosCategoria/{id}','ProductoController@listarProductosCategoria');
@@ -80,9 +87,6 @@ Route::get('/buscarProducto/{id}','ProductoController@buscarProducto');
 
 
 Route::get ('producto/{codproducto}/confirmar','ProductoController@confirmar')->name('producto.confirmar');
-
-
-
 
 Route::resource('Escuela', 'EscuelaController');  // es resource pq trabajamos con varias rutas 
 Route::resource('Factultad', 'FacultadController');  // es resource pq trabajamos con varias rutas 
