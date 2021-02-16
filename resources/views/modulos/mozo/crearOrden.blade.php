@@ -69,8 +69,9 @@
 <form method="POST" action="{{ route('orden.store')}}">
 @csrf
 <div class="card">
-    <input id="nroArea" type="hidden" name="codMesa" value="{{ $mesa->codMesa }}" >
-    <input id="nroArea" type="hidden" name="codMeseroActual" value="{{ Auth::user()->empleado->codEmpleado}}" >
+    <input id="codMesa" type="hidden" name="codMesa" value="{{ $mesa->codMesa }}" >
+    {{-- <input id="codMeseroActual" type="hidden" name="codMeseroActual" value="{{ App\Empleado::getEmpleadoLogeado()->codEmpleado}}" >
+     --}}
     <div class="card-header ui-sortable-handle" style="cursor: move;">
       <h3 class="card-title">
         <i class="fas fa-chart-pie mr-1"></i>
@@ -174,7 +175,7 @@
     </section>
     
     
-    <section class="col-lg-4 connectedSortable ui-sortable">
+    {{-- <section class="col-lg-4 connectedSortable ui-sortable">
   
         
         <!-- Custom tabs (Charts with tabs)-->
@@ -196,7 +197,7 @@
       </div>
 
 
-    </section>
+    </section> --}}
 
 </div>
 

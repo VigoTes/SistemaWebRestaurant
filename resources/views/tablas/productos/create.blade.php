@@ -29,7 +29,16 @@
           @endforeach
         </select>
       </div>
-      
+      <div class="form-group">
+        <label for="descripcion">Descripcion:</label>
+        <textarea class="form-control" name="descripcion" id="descripcion" cols="30" rows="3"></textarea>
+        @error('descripcion')
+            <span class = "invalid-feedback" role ="alert">
+                <strong>{{ $message }} </strong>
+            </span>
+        @enderror  
+    
+      </div>
 
           <div class="form-group">
             <label for="precio">Precio</label>

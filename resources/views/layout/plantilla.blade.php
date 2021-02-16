@@ -10,7 +10,9 @@
   <!-- Font Awesome -->
  <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
 
-  
+ <link rel="stylesheet" href="/calendario/css/bootstrap-datepicker.standalone.css">
+ <link rel="stylesheet" href="/select2/bootstrap-select.min.css">
+ 
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
  
@@ -73,13 +75,19 @@
         <div class="image">
           <img src="/adminlte/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
-
-
+     
+        @if(Auth::id()!='') {{-- Si está logeado y no es admin --}}
         <div class="info">
           <a href="#" class="d-block">
-            {{ Auth::user()->name }}
+           {{ App\Empleado::getEmpleadoLogeado()->getNombreCompleto()}}
+           <br>
+            <b>{{ App\Empleado::getEmpleadoLogeado()->getTipoTrabajador()}}
+            </b>
+           
           </a>
         </div>
+        @endif
+        
       </div>
 
       <!-- Sidebar Menu -->
@@ -115,6 +123,13 @@
               <p>Vista Cajero</p>
             </a>
           </li>
+
+          <li class="nav-item">
+            <a href="{{route('caja.index')}}" class="nav-link">
+              <i class="fab fa-free-code-camp"></i>
+              <p>Visualizar Cajero</p>
+            </a>
+          </li>
           
           
           <li class="nav-item has-treeview">
@@ -138,6 +153,13 @@
                   <p>Productos</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{route('empleados.ver')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Empleados</p>
+                </a>
+              </li>
+              
               <!--
               <li class="nav-item">
                 <a href="{{route('cliente.index')}}" class="nav-link">
@@ -161,8 +183,16 @@
 
 
             </ul>
+
           </li>
-          
+          <li class="nav-item">
+            <a href="{{route('user.cerrarSesion')}}" class="nav-link">
+              <i class="fas fa-sign-out-alt"></i>
+              <p>
+                Cerrar Sesión
+              </p>
+            </a>
+          </li>
          </ul>
       </nav>
 
@@ -240,5 +270,12 @@
 <!-- LIBRERIAS PARA NOTIFICACION DE ELIMINACION--->
 <script src="/adminlte/dist/js/sweetalert.min.js"></script>
 <link rel="stylesheet" href="/adminlte/dist/css/sweetalert.css">
+
+<script src="/select2/bootstrap-select.min.js"></script>   
+
+<script src="/calendario/js/bootstrap-datepicker.min.js"></script>
+<script src="/calendario/locales/bootstrap-datepicker.es.min.js"></script>
+
+
 </body>
 </html>

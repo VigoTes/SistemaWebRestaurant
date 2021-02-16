@@ -18,6 +18,8 @@ use Exception;
 use App\Cliente;
 use DateTime;
 use Illuminate\Support\Facades\Date;
+use PhpParser\Node\Stmt\TryCatch;
+use Throwable;
 
 class OrdenController extends Controller
 {
@@ -28,6 +30,7 @@ class OrdenController extends Controller
     }
 
     //LISTA SOLAMENTE LAS ORDENES QUE ESTÁN YA PREPARADAS Y QUE DEBEN SER ENTREGADAS A LAS MESAS
+    //TAMBIEN LISTA LAS ORDENES QUE ESTÁN PAGADAS Y ENTREGADAS (Para poder finalizarlas y desocupar la mesa)
     public function listarParaMesero(Request $request){
         
         $codSala = $request->sala; 
@@ -35,24 +38,39 @@ class OrdenController extends Controller
         if ($codSala != 0) { //si se seleccionó alguna sala
         
             $ordenes = Orden::where('codEstado','<','5')
-            ->where('mesa.codSala','=',$codSala)
-            ->where('observaciones','like','%'.$buscarpor.'%')
+            ->where('mesa.codSala','=',$codSala)// PARA SALA ESPECIFICA
             ->where('codEstado','=','3')
+            ->where('observaciones','like','%'.$buscarpor.'%')
             ->join('mesa', 'orden.codMesa', '=', 'mesa.codMesa')
-            ->orderBy('codEstado','ASC')  
-            ->get();
+            //->get()
+            ;
             
         }else{ //si se selecciono todas las salas
         
             $ordenes = Orden::where('codEstado','<','5')
+            ->where('codEstado','>=','3')
             ->where('observaciones','like','%'.$buscarpor.'%')
-            ->where('codEstado','=','3')
-            ->orderBy('codEstado','ASC')  
-            ->get();
+            //->get()
+            ;
 
         }
-        
-        
+
+
+
+        /*(quiero las que estén (preparadas y no pagadas), 
+                                      y (entregadas y pagadas)
+        */
+        $ordenes->where(function ($query) {
+            $query->where('codEstado', '=','3') //PREPARADAS
+                ->where('estadoPago', '=', '0'); // Y NO PAGADAS
+        })->orWhere(function($query) { //AND
+            $query->where('codEstado','=', '4')   //ENTREGADAS
+                ->where('estadoPago', '=', '1');	//Y PAGADAS
+        });
+
+
+        $ordenes = $ordenes->orderBy('codEstado','ASC')->get();
+     
         $listaSalas = Sala::All();
         return view('modulos.mozo.listarOrdenes',compact('ordenes','listaSalas','codSala'));
         
@@ -119,7 +137,7 @@ class OrdenController extends Controller
     }
 
 
-    //Solo debe listar las que ya están para pagar 
+    //lista todas las ordenes 
     public function listarParaCaja(Request $request)
     {
         
@@ -138,6 +156,7 @@ class OrdenController extends Controller
             ->where('mesa.codSala','=',$codSala)
             ->where('observaciones','like','%'.$buscarpor.'%')
             ->join('mesa', 'orden.codMesa', '=', 'mesa.codMesa')
+            ->orderBy('estadoPago','ASC')  
             ->orderBy('codEstado','ASC')  
             ->get();
             
@@ -145,7 +164,8 @@ class OrdenController extends Controller
         
             $ordenes = Orden::where('codEstado','<','5')
             ->where('observaciones','like','%'.$buscarpor.'%')
-            ->orderBy('codEstado','ASC')  
+            ->orderBy('estadoPago','ASC')  //primero salgan las no pagadas
+            ->orderBy('codEstado','ASC')   //primer salgan las que estan mas recientes
             ->get();
 
         }
@@ -167,21 +187,66 @@ class OrdenController extends Controller
 
 
     public function pagar(Request $request, $id){ //id de la orden a pagar
-        $orden = Orden::findOrFail($id);
-        $orden->costoTotal = $request->montoOrden;
-        $orden->montoPagado = $request->sencilloCliente;
-        $orden->cambioDevuelto = $request->sencilloDevuelto;
-        $orden->codEstado = 5; //seteamos el estado en pagado
-        $orden->fechaHoraPago = Carbon::now()->subHours(5);
-        $orden->codTipoCDP = $request->tipoCDP;
-        //FALTA IMPLEMENTAR LO DE REGISTRO CAJA
-        $orden->codRegistroCaja = '1';
-
-        $orden->save();
         
+        try {
+            DB::beginTransaction();        
+            $orden = Orden::findOrFail($id);
 
-        return redirect()->route('orden.listarParaCaja')
-        ->with('datos','Orden N°'.$orden->codOrden.' Pagada');
+            
+
+            if(($request->clientes) == '-1'  ){ //si no se seleccionó a un cliente frecuence
+                // registramos al cliente nuevo
+                $cliente=new Cliente();
+                $cliente->nombres=$request->nombres;
+                $cliente->apellidos=$request->apellidos;
+                $cliente->DNI=$request->DNI;
+                $cliente->save();
+
+                $orden->DNI=$request->DNI;
+            }else{
+                $orden->DNI=$request->clientes; //si se seleccionó a un cliente frecuente
+                
+            }
+            error_log('
+                DNI ::::: 
+                $orden->DNI '. $orden->DNI.'
+            
+            
+            ');
+
+            $orden->codTipoCDP=$request->tipoCDP;
+            $orden->codTipoPago=$request->tipoPago;
+            $orden->codMedioPago=$request->medioPago;
+            $orden->estadoPago=1;
+
+            $orden->costoTotal = $request->montoOrden;
+            $orden->montoPagado = $request->sencilloCliente;
+            $orden->cambioDevuelto = $request->sencilloDevuelto;
+            //$orden->codEstado = 5; //seteamos el estado en pagado
+            $orden->fechaHoraPago = Carbon::now()->subHours(5);
+            //FALTA IMPLEMENTAR LO DE REGISTRO CAJA
+            $orden->codRegistroCaja = Empleado::getRegistroCaja()->codRegistroCaja;
+
+            $orden->save();
+            
+            DB::commit();        
+            return redirect()->route('orden.listarParaCaja')
+            ->with('datos','Orden N°'.$orden->codOrden.' Pagada');
+
+
+        } catch (\Throwable $th) {
+            error_log('Ha ocurrido un error en el OrdenController PAGAR
+            
+            
+            '.$th.'
+            
+            
+            
+            
+            ');
+            DB::rollback();
+        }
+
     }
 
 
@@ -213,7 +278,8 @@ class OrdenController extends Controller
             $orden=new Orden();
             $orden->codMesa=$request->codMesa;
             $orden->DNI=null;
-            $orden->codEmpleadoMesero=$request->codMeseroActual;
+            
+            $orden->codEmpleadoMesero= Empleado::getEmpleadoLogeado()->codEmpleado;
             $orden->codEstado=1;
             $orden->observaciones=$request->txtobservaciones;
             $orden->descuento=null;
@@ -226,6 +292,7 @@ class OrdenController extends Controller
             $orden->costoTotal=$request->total;
             $orden->montoPagado=null;
             $orden->cambioDevuelto=null;
+            $orden->estadoPago='0';
 
             $orden->save();
 
@@ -253,7 +320,16 @@ class OrdenController extends Controller
             DB::commit();                
             return redirect('/Salas/Mesero');
         } 
-        catch (Exception $e) {
+        catch (Throwable $th) {
+            error_log('Ha ocurrido un error en el OrdenController STORE
+            
+            
+            '.$th.'
+            
+            
+            
+            
+            ');
             DB::rollback();
         }
                 
@@ -302,6 +378,54 @@ class OrdenController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+
+
+
+
+
+    /*Se ejecuta cuando :
+        - El mesero ve que el cliente ya desocupo la mesa y la libera
+
+    HACE: 
+        - pasa la orden al estado 5 finalizada
+        - Libera la mesa en la que está la orden
+    */
+    public function finalizar($id){
+
+        try{
+            DB::beginTransaction();    
+            $orden = Orden::findOrFail($id);
+            $orden->codEstado='5';
+
+            $mesa = Mesa::findOrFail($orden->codMesa);
+            $mesa->estado = '1';
+
+            $orden->save();     
+            $mesa->save();
+
+            DB::commit(); 
+
+            return redirect()->route('orden.listarParaMesero');
+        }
+        catch(Throwable $th){
+            error_log('Ha ocurrido un error en el OrdenController finalizar
+            
+            
+            '.$th.'
+            
+            
+            
+            
+            ');
+            DB::rollback();
+        }
+        
+
+
+
     }
     
     public function siguiente($id){

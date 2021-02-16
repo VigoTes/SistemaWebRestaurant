@@ -16,7 +16,7 @@ class Orden extends Model
     // le indicamos los campos de la tabla 
     protected $fillable = ['codMesa','DNI','codEmpleadoMesero','codEstado','observaciones',
     'descuento','codMedioPago','codTipopago','fechaHoraCreacion','fechaHoraPago',
-    'codTipoCDP','codRegistroCaja','costoTotal','montoPagado','cambioDevuelto'];
+    'codTipoCDP','codRegistroCaja','costoTotal','montoPagado','cambioDevuelto','estadoPago'];
 
     public function getNombreSala(){
         $mesa = Mesa::findOrFail($this->codMesa);
@@ -48,6 +48,13 @@ class Orden extends Model
         return $estado->nombre;
     }
 
+    public function getEstadoPago(){
+        if($this->estadoPago=='0')
+            return "No Pagado";
+        else
+            return "Pagado";
+
+    }
     public function getHoraCreacion(){
         $vector = explode(" ", $this->fechaHoraCreacion); //separamos el datetime en DATE y TIME XD
 
@@ -92,31 +99,48 @@ class Orden extends Model
 
     public function iconoEstadoActual(){ // retorna el boton para pasar al siguiente estado en el orden natural
         //pendiente -> preparando ->preparado ->entregada->finalizada
-    switch ($this->codEstado) {
+        switch ($this->codEstado) {
 
-        case 1: //estado pendiente
-            return 'fas fa-clock';
-            break;
-        case 2: //estado pendiente
-            return 'fas fa-fire';
-            break;           
-        case 3: //estado preparando
-            return 'fas fa-check';
-            break;           
-        case 4: //estado preparado
-            return 'fas fa-check-double'; 
-            break;           
-        case 5: //estado entregado
-            # code...
-            break;           
-            
+            case 1: //estado pendiente
+                return 'fas fa-clock';
+                break;
+            case 2: //estado pendiente
+                return 'fas fa-fire';
+                break;           
+            case 3: //estado preparando
+                return 'fas fa-check';
+                break;           
+            case 4: //estado preparado
+                return 'fas fa-check-double'; 
+                break;           
+            case 5: //estado entregado
+                # code...
+                break;           
+                
 
-        default:
-            # code...
-            break;
+            default:
+                # code...
+                break;
+        }
+
+
     }
 
+    public function mesero(){
+        return $this->hasOne('App\Empleado','codEmpleado','codEmpleadoMesero');
+    }
+    public function cliente(){
+        return $this->hasOne('App\Cliente','DNI','DNI');
+    }
+    public function tipoCDP(){
+        return $this->hasOne('App\TipoCDP','codTipoCDP','codTipoCDP');
+    }
+    public function tipoPago(){
+        return $this->hasOne('App\TipoPago','codTipoPago','codTipoPago');
+    }
+    public function medioPago(){
+        return $this->hasOne('App\MedioPago','codMedioPago','codMedioPago');
+    }
 
-}
 
 }

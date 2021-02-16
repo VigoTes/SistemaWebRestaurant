@@ -175,13 +175,14 @@
                 <br>
                 <i class="{{$itemOrden->iconoEstadoActual()}}"></i>
               </td>
-              <td>{{$itemOrden->calcularCosto()}}</td>
-     
+              <td style="text-align:right">
+                S/. {{number_format( $itemOrden->calcularCosto(),2) }}
+              </td>
               
               <td style="text-align: center">
 
                   {{-- Si ya está entregada,  ya no deberia salirle al cocinero --}}
-                    @if($itemOrden->codEstado<4)
+                    @if($itemOrden->codEstado<3)
                         <a href="{{route('orden.next',$itemOrden->codOrden)}}" class = "btn btn-success">  
                           <i class="{{$itemOrden->iconoEstadoSiguiente()}}"></i>
                         </a>    

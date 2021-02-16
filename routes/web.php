@@ -1,16 +1,23 @@
 <?php
 
+use App\Empleado;
 use Illuminate\Support\Facades\Route;
 
+/* RUTAS PARA INGRESO Y REGISTRO DE USUARIO Y CLIENTE */
 
+Route::post('/ingresar', 'UserController@logearse')->name('user.logearse');  //esta es para cuando le damos al boton Ingresar
+Route::get('/login', 'UserController@verLogin')->name('user.verLogin'); //para desplegar la vista del Login
+Route::get('/cerrarSesion','UserController@cerrarSesion')->name('user.cerrarSesion');
+
+Route::get('/', 'UserController@verLogin');
+
+/* Route::get('/login', function () {
+    return view('login');
+}); */
 
 Route::get('/', function () {
-    return view('index');
-});
-
-Route::get('/bienvenido', function () {
     return view('bienvenido');
-});
+})->name('indexPrincipal');
 
 
 // usar dd("aaaaaaaaaa"); para debugear GA
@@ -26,7 +33,17 @@ Route::get('/producto/delete/{id}','ProductoController@delete');
 
 /**ORDEN */
 Route::resource('orden', 'OrdenController');  // es resource pq trabajamos con varias rutas 
-Route::resource('caja', 'CajaController');  
+Route::get('/caja/cierre','CajaController@cerrarCaja')->name('caja.cierre');
+Route::post('/caja/cierre/save','CajaController@guardarCerrarCaja');
+Route::resource('caja', 'CajaController');
+
+
+/* EMPLEADO CRUD CON USUARIO */
+Route::get('/empleados/ver','EmpleadoController@listar')->name('empleados.ver');
+Route::get('/empleados/verCrear','EmpleadoController@verCrear')->name('empleados.verCrear');
+Route::post('/empleados/nuevo','EmpleadoController@store')->name('empleados.store');
+Route::post('/empleados/delete','EmpleadoController@delete')->name('empleados.delete');
+
 
 /* LISTAR ORDENES SEGUN PERSPECTIVAS */
 Route::get('/Ordenes/Cocina','OrdenController@listarParaCocina')->name('orden.listarParaCocina');
@@ -38,6 +55,9 @@ Route::get('/Salas/Mesero','MesaController@listarMesa')->name('orden.listarSalas
 
 // funcion para pasar al siguiente estado
 Route::get ('orden/{id}/next','OrdenController@siguiente')->name('orden.next');
+
+Route::get ('orden/{id}/finalizar','OrdenController@finalizar')->name('orden.finalizar');
+
 //para pagar desde caja
 Route::get ('orden/{id}/ventanaPago','OrdenController@ventanaPago')->name('orden.ventanaPago');
 
@@ -49,7 +69,6 @@ Route::post('/listarProductosCategoria/{id}','ProductoController@listarProductos
 
 Route::get('/buscarProducto/{id}','ProductoController@buscarProducto');
 //Route::get ('categoria/{id}/confirmar','CategoriaController@confirmar')->name('categoria.confirmar');
-
 
 
 

@@ -10,7 +10,7 @@ use App\Unidad;
 
 class ProductoController extends Controller
 {
-     const PAGINATION = '4';
+     const PAGINATION = '10';
 
     
     public function index(Request $request )
@@ -58,7 +58,7 @@ class ProductoController extends Controller
             );
 
             $producto = new Producto();
-            
+            $producto->descripcion = $request->descripcion;
             $producto->nombre=$request->nombre;
             $producto->codCategoria=$request->codCategoria;
             

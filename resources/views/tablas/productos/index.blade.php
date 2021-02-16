@@ -37,6 +37,8 @@
             <tr>
               <th scope="col">Codigo</th>
               <th scope="col">Nombre</th>
+              <th scope="col">Descripcion</th>
+              
               <th scope="col">Categoria</th>
               <th scope="col">Precio</th>
               <th scope="col">Opciones</th>
@@ -49,7 +51,10 @@
             <tr>
               <td>{{$itemProducto->codProducto  }}</td>
               <td>{{$itemProducto->nombre  }}</td>
+              <td>{{$itemProducto->descripcion}}</td>
+              
               <td>{{$itemProducto->categoria->nombre}}</td>
+              
               <td>S/ {{$itemProducto->precioActual}}</td>
               <td>
 
@@ -57,7 +62,7 @@
                       {{-- MODIFICAR RUTAS DE Delete y Edit --}}
                   <a href="{{route('producto.edit',$itemProducto->codProducto)}}" class = "btn btn-warning">  
                       <i class="fas fa-edit"> </i> 
-                        Editar
+                        
                   </a>
 
                   <a href="#" class="btn btn-danger" title="Eliminar registro" onclick="swal({//sweetalert
@@ -74,7 +79,7 @@
                   },
                   function(){//se ejecuta cuando damos a aceptar
                     window.location.href='/producto/delete/{{$itemProducto->codProducto}}';
-                  });"><i class="fas fa-trash-alt"> </i>Eliminar</a>
+                  });"><i class="fas fa-trash-alt"> </i></a>
               </td>
 
           </tr>

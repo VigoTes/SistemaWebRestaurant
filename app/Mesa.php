@@ -17,8 +17,7 @@ class Mesa extends Model
 
     public function sala(){
         return $this->hasOne('App\Sala','codSala','codSala');
-
-}
+    }
     
     
 }

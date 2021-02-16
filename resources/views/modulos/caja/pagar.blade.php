@@ -30,7 +30,18 @@
 
           <div class="form-group">
             <label for="nombre">Nombre del Cliente</label>
-            <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre" name="nombre" placeHolder="Ingrese nombre">
+            <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombres" name="nombres" placeHolder="Ingrese nombres">
+            
+            @error('nombre')
+                <span class = "invalid-feedback" role ="alert">
+                    <strong>{{ $message }} </strong>
+                </span>
+            @enderror  
+          </div>
+
+          <div class="form-group">
+            <label for="apellido">Apellidos del Cliente</label>
+            <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="apellidos" name="apellidos" placeHolder="Ingrese apellidos">
             
             @error('nombre')
                 <span class = "invalid-feedback" role ="alert">

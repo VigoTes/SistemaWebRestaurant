@@ -4,14 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Caja extends Model
+class TipoEmpleado extends Model
 {
-    protected $table = "caja";
-    protected $primaryKey ="codCaja";
+    protected $table = "tipo_empleado";
+    protected $primaryKey ="codTipoEmpleado";
 
     public $timestamps = false;  //para que no trabaje con los campos fecha 
 
 
     // le indicamos los campos de la tabla 
-    protected $fillable = ['nombre'];
+    protected $fillable = ['nombrePuesto'];
+
 }

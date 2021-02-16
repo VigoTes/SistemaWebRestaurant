@@ -82,6 +82,7 @@
               
               <th scope="col">Hora pedido</th>
               <th scope="col">Estado</th>
+              <th scope="col">Pagado</th>
               <th scope="col">Costo</th>
               <th scope="col">Opciones</th>
             </tr>
@@ -93,25 +94,29 @@
               <td>{{$itemOrden->getNombreSala()  }}</td>
               <td style="text-align: center">{{$itemOrden->getNroMesaEnSala()  }}</td>
               <td>  {{$itemOrden->listarProductos()}}      </td>
-             
               <td style="text-align: center">{{$itemOrden->getHoraCreacion()  }}</td>
-              
-
-              
-              <td style="text-align: center">{{$itemOrden->getEstado()}} 
+              <td style="text-align: center">{{$itemOrden->getEstado()}}
                 <br>
                 <i class="{{$itemOrden->iconoEstadoSiguiente()}}"></i>
               </td>
-              <td>{{$itemOrden->calcularCosto()}}</td>
+              <td>
+                {{$itemOrden->getEstadoPago()}}
+
+              </td>
+              <td style="text-align:right">
+                S/. {{number_format( $itemOrden->calcularCosto(),2) }}
+              </td>
      
               
               <td style="text-align: center">
 
 
-
-                    <a href="{{route('orden.ventanaPago',$itemOrden->codOrden)}}" class = "btn btn-success">  
-                      <i class="fas fa-money-bill-wave"></i>
-                    </a>  
+                @if($itemOrden->estadoPago=='0')
+                <a href="{{route('orden.ventanaPago',$itemOrden->codOrden)}}" class = "btn btn-success">  
+                  <i class="fas fa-money-bill-wave"></i>
+                </a>  
+                @endif
+                    
                     
                 
                

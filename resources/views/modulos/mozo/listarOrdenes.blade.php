@@ -83,6 +83,8 @@
               <th scope="col">Hora pedido</th>
               <th scope="col">Estado</th>
               <th scope="col">Costo</th>
+              <th scope="col"  style="text-align: center">¿Pago?</th>
+              
               <th scope="col">Opciones</th>
             </tr>
           </thead>
@@ -102,16 +104,26 @@
                 <br>
                 <i class="{{$itemOrden->iconoEstadoSiguiente()}}"></i>
               </td>
-              <td>{{$itemOrden->calcularCosto()}}</td>
-     
-              
+              <td style="text-align:right">
+                S/. {{number_format( $itemOrden->calcularCosto(),2) }}
+              </td>
+              <td style="text-align: center">
+                {{$itemOrden->getEstadoPago()}}
+
+              </td>
               <td style="text-align: center">
 
 
-
-                <a href="{{route('orden.next',$itemOrden->codOrden)}}" class = "btn btn-success">  
-                  <i class="{{$itemOrden->iconoEstadoSiguiente()}}"> Entregar</i>
-                </a>  
+                @if($itemOrden->estadoPago=='0')
+                  <a href="{{route('orden.next',$itemOrden->codOrden)}}" class = "btn btn-success">  
+                    <i class="{{$itemOrden->iconoEstadoSiguiente()}}"> Entregar</i>
+                  </a>  
+                @else
+                  <a href="{{route('orden.finalizar',$itemOrden->codOrden)}}" class = "btn btn-success">  
+                    <i class="fas fa-archive"> Finalizar y Liberar Mesa</i>
+                  </a>  
+                @endif
+                
                     
                     
                
