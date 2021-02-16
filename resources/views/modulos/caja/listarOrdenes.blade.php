@@ -116,10 +116,12 @@
                 <a href="{{route('orden.ventanaPago',$itemOrden->codOrden)}}" class = "btn btn-success">  
                   <i class="fas fa-money-bill-wave"></i>
                 </a>
-                @endif
-                <a href="/generarCDP" class = "btn btn-info">  
+                @else
+                <a href="/generarCDP/{{$itemOrden->codOrden}}" class = "btn btn-info">  
                   <i class="fas fa-file-download"></i>
                 </a>
+                @endif
+                
                     
                 
                

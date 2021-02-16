@@ -18,8 +18,25 @@
                         <strong>{{ $message }}</strong>
                         </span>   
                     @enderror     
-                </div>              
+                </div>      
+                
+                <div>
+                    <label for="descripcion">Descripcion:</label>
+                    <textarea class="form-control" name="descripcion" id="descripcion" cols="90" rows="3">{{$producto->descripcion}}</textarea>
+                    @error('descripcion')
+                        <span class = "invalid-feedback" role ="alert">
+                            <strong>{{ $message }} </strong>
+                        </span>
+                    @enderror  
+                
+                </div>
+                
             </div>              
+
+
+
+
+
             <div class="form-row">                
                 <div class="form-group col-md-6">
                     <label for="">Categorias</label>                

@@ -16,8 +16,8 @@ class Producto extends Model
 
         
     // le indicamos los campos de la tabla 
-    protected $fillable = ['nombre','codCategoria','estado','precioActual'];
-
+    protected $fillable = ['nombre','codCategoria','estado','precioActual','menuDeHoy'];
+    
     public function categoria(){
             return $this->hasOne('App\Categoria','codCategoria','codCategoria');
 

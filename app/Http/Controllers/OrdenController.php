@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Exception;
 use App\Parametro;
 use App\Cliente;
+use App\Empresa;
 use DateTime;
 use Illuminate\Support\Facades\Date;
 use PhpParser\Node\Stmt\TryCatch;
@@ -272,7 +273,7 @@ class OrdenController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    
+    /* CREA LA ORDNE DESDE LA PERSPECTIVA MESERO EN UNA MESA */
     public function store(Request $request)
     {
         date_default_timezone_set('America/Lima');
@@ -447,30 +448,40 @@ class OrdenController extends Controller
     }
     
 
+    /* DESPLIEGA LA VISTA PARA CREAR UNA ORDEN  */
     public function ordenMesa($id){
         $mesa=Mesa::find($id);
         $categorias1=Categoria::where('estado','=',1)->get();
-        $productos=Producto::where('estado','=',1)->get();
+        $productos=Producto::where('estado','=',1)
+            ->where('menuDeHoy','=','1')    
+            ->get();
         $meseros=Empleado::where('codTipoEmpleado','=',3)->get();
 
         return view('modulos.mozo.crearOrden',compact('mesa','categorias1','productos','meseros'));
     }
 
 
-    public function generarCDP(){
+    public function generarCDP($id){
 
         //COMANDO PARA EL COMPLEMENTO PARA PDF
         //composer require barryvdh/laravel-dompdf
         //COMPOSER: es un gestor para dependencias de laravel en la nube (se guarda en vendor)
 
         //$pdf = \PDF::loadView('modulos.caja.CDP')->setPaper(array(0, 0, 301, 623.622), 'portrait');
-        $pdf = \PDF::loadView('modulos.caja.CDP');
+
+        $empresa=Empresa::getEmpresa();
+        $orden=Orden::find($id);
+        $detalles=DetalleOrden::where('codOrden','=',$orden->codOrden)->get();
+
+        $pdf = \PDF::loadView('modulos.caja.CDP',array('empresa'=>$empresa, 
+                                                        'orden'=>$orden,
+                                                        'detalles'=>$detalles));
         $pdf->setPaper(array(0, 0, 301, 623.622), 'portrait');
         //$pdf->set_option('defaultFont', 'Courier');
         
         
         //var_dump($data[0]->elementos->descripcionElemento);
 
-        return $pdf->download('XDXD.pdf');
+        return $pdf->download('dinamicoV1.pdf');
     }
 }

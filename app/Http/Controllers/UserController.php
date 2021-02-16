@@ -39,26 +39,7 @@ class UserController extends Controller
                         else{
                             //este attempt es para que el Auth se inicie
                         
-                            $rutaPaIr = '';
-                            error_log('auth:'.Auth::id());
-                            $tipo = Empleado::getEmpleadoLogeado()->codTipoEmpleado;
-                            switch ($tipo) {
-                                case '1': //COCINERO
-                                    $rutaPaIr = 'orden.listarParaCocina';
-                                    break;
-                                case '2': //CAJERO
-                                    $rutaPaIr = 'orden.listarParaCaja';
-                                    break;
-                                case '3': //MESERO
-                                    $rutaPaIr = 'orden.listarSalas';
-                                    break;
-                                            
-                                default:
-                                $rutaPaIr = 'indexPrincipal';
-                                    break;
-                            }
-
-                            return redirect()->route($rutaPaIr);
+                            return redirect()->route( $this->miRutaPrincipal());
                         }
 
 
@@ -76,6 +57,31 @@ class UserController extends Controller
             }
         }
 
+
+        //devuelve las vistas de cocina, mesero o caja segun sea el actor que esté logeado
+        public function miRutaPrincipal(){
+            $rutaPaIr = '';
+            error_log('auth:'.Auth::id());
+            $tipo = Empleado::getEmpleadoLogeado()->codTipoEmpleado;
+            switch ($tipo) {
+                case '1': //COCINERO
+                    $rutaPaIr = 'orden.listarParaCocina';
+                    break;
+                case '2': //CAJERO
+                    $rutaPaIr = 'orden.listarParaCaja';
+                    break;
+                case '3': //MESERO
+                    $rutaPaIr = 'orden.listarSalas';
+                    break;
+                            
+                default:
+                $rutaPaIr = 'indexPrincipal';
+                    break;
+            }
+
+            return $rutaPaIr;
+
+        }
 
         public function verLogin(){
             return view('login');

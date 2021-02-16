@@ -91,7 +91,8 @@
                       },
                       function(){//se ejecuta cuando damos a aceptar
                         window.location.href='{{route('empleados.delete',$itemlista->codEmpleado)}}';
-                      });"><i class="fas fa-trash-alt"> </i>Eliminar</a>
+                      });"><i class="fas fa-trash-alt"> </i>Eliminar
+                    </a>
 
                 </td>
 

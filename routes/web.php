@@ -1,8 +1,10 @@
 <?php
 
 use App\Empleado;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
+use App\Empresa;
 use Illuminate\Support\Facades\Hash;
 /* RUTAS PARA INGRESO Y REGISTRO DE USUARIO Y CLIENTE */
 
@@ -17,6 +19,11 @@ Route::get('/', 'UserController@verLogin');
 }); */
 
 Route::get('/', function () {
+    if(Auth::id()=='')
+        return redirect()->route('user.verLogin');
+    else
+        return redirect()->route( (new UserController())->miRutaPrincipal());
+
     return view('bienvenido');
 })->name('indexPrincipal');
 
@@ -35,11 +42,19 @@ Route::resource('categoria', 'CategoriaController');  // es resource pq trabajam
 Route::get('/categoria/delete/{id}','CategoriaController@delete');
 
 /**PRODUCTO */
+Route::get('/producto/verMenu/','ProductoController@verMenu')->name('producto.verMenu');;
+Route::get('/producto/limpiarMenu/','ProductoController@limpiarMenu')->name('producto.limpiarMenu');;
+
+Route::get('producto/añadirAlMenu/{id}','ProductoController@añadirAlMenu')->name('producto.añadirAlMenu');
+
 Route::resource('producto', 'ProductoController');  // es resource pq trabajamos con varias rutas 
+
+
+
 Route::get('/producto/delete/{id}','ProductoController@delete');
 
 Route::get('/gagaa/',function(){
-return Hash::make('hola');
+    return Empresa::getEmpresa();
 });
 
 /**ORDEN */
@@ -75,7 +90,7 @@ Route::get ('orden/{id}/finalizar','OrdenController@finalizar')->name('orden.fin
 Route::get ('orden/{id}/ventanaPago','OrdenController@ventanaPago')->name('orden.ventanaPago');
 
 Route::post('/pagarOrden/{id}','OrdenController@pagar')->name('orden.pagar');
-Route::get('/generarCDP','OrdenController@generarCDP');
+Route::get('/generarCDP/{id}','OrdenController@generarCDP');
 
 Route::get('/orden/mesa/{id}','OrdenController@ordenMesa');
 Route::post('/listarProductosCategoria/{id}','ProductoController@listarProductosCategoria');

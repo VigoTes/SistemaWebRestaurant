@@ -3,7 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Blank Page</title>
+  <title>
+    Sistema Restaurant
+    
+
+  </title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -27,7 +31,7 @@
   @yield('estilos')
 
 </head>
-<body class="hold-transition sidebar-mini">
+<body  class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
 <div class="wrapper">
   <!-- Navbar -->
@@ -59,12 +63,19 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="{{ url('/bienvenido') }}" class="brand-link">
-      <img src="/adminlte/dist/img/AdminLTELogo.png"
+    <a href="" class="brand-link">
+      <img src="/LogoRestaurant.jpg"
            alt="AdminLTE Logo"
            class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <span class="brand-text font-weight-light">
+        <b>
+          {{App\Empresa::getEmpresa()->nombre}}
+
+
+        </b>
+        
+      </span>
     </a>
 
 
@@ -175,7 +186,19 @@
                   <p>Empleados</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{route('producto.verMenu')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Menú de Hoy</p>
+                </a>
+              </li>
+              
+
             </ul>
+
+
+
+
           @endif
 
           </li>
@@ -233,11 +256,27 @@
   <!-- /.content-wrapper -->
 
   <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.0.5
-    </div>
-    <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
-    reserved.
+   {{--  <div class="float-right d-none d-sm-block">
+      <b> 
+        Ver en 
+        <a href="https://github.com/VigoTes/SistemaWebRestaurant"> GitHub 
+        </a>
+        (
+        <a href="https://github.com/VigoTes">Vigotes</a> 
+        / 
+        <a href="https://github.com/FelixGuriol">FelixGuriol</a>
+        / 
+        <a href="https://github.com/Francovalladolid">FrancoValladolid</a>
+        /
+        <a href="https://github.com/MarskyR">MarskyR</a>)
+      </b>Versión 1.0
+    </div> --}}
+
+    <strong>Copyright &copy; 2021 
+      
+      .
+    </strong> 
+    Derechos Reservados.
   </footer>
 
   <!-- Control Sidebar -->
@@ -275,7 +314,8 @@
 <script src="/calendario/js/bootstrap-datepicker.min.js"></script>
 <script src="/calendario/locales/bootstrap-datepicker.es.min.js"></script>
 
-
+<!-- PARA EL CODIGO DE BARRAS-->
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js" type="text/javascript"></script>
 
 </body>
 </html>
