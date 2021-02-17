@@ -21,4 +21,8 @@ class RegistroCaja extends Model
         return $this->hasOne('App\Caja','codCaja','codCaja');
 
     }
+    public function empleado(){
+        return $this->hasOne('App\Empleado','codEmpleado','codEmpleadoCajero');
+
+    }
 }

@@ -14,12 +14,27 @@
 </script>
 
 <br>
+
+@if(session('datos'))
+<div class ="alert alert-warning alert-dismissible fade show mt-3" role ="alert">
+    {{session('datos')}}
+  <button type = "button" class ="close" data-dismiss="alert" aria-label="close">
+      <span aria-hidden="true"> &times;</span>
+  </button>
+</div>
+@ENDIF
+
+<h1 >Gestion de Arqueo de Caja : 
+    <h2>Apertura de Caja</h2>    
+    
+</h1>
+
 <form id="frmcaja" name="frmcaja" role="form" action="{{route('caja.store')}}" class="form-horizontal form-groups-bordered" method="post" enctype="multipart/form-data">
     @csrf
     <div class="container-fluid">
         <div class="card card-primary card-outline">
             <div class="card-header">
-                <h3 class="card-title">Gestion de Arqueo de Caja : Apertura de Caja</h3>
+                
             </div> <!-- /.card-body -->
             <div class="card-body">
                 <div class="form-group row">
@@ -34,7 +49,7 @@
                     </div>
                     <div class="col-sm-3">
                         <label class="col-form-label">Hora de Apertura:</label>
-                        <input type="text" class="form-control" id="fechaHoraApertura" name="fechaHoraApertura" value="{{$fechaHoraActual->format("Y-m-d H:i:s")}}" disabled>
+                        <input type="text" class="form-control" id="fechaHoraApertura" name="fechaHoraApertura" value="{{$fechaHoraActual->format("Y-m-d H:i:s")}}" readonly>
                     </div>
                     <div class="col-sm-4">
                         <label class="col-form-label">Monto Inicial:</label> (S/)

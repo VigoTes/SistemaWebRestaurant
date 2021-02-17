@@ -15,4 +15,9 @@ class DetalleOrden extends Model
     // le indicamos los campos de la tabla 
     protected $fillable = ['codOrden','codProducto','cantidad','precio'];
 
+    public function producto(){
+        return $this->hasOne('App\Producto','codProducto','codProducto');
+
+    }
+
 }

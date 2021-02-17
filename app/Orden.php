@@ -39,7 +39,13 @@ class Orden extends Model
 
         //  $listaDetallesString = implode(",",$detalles);
         $listaComada = trim($listaComada,",");
-        
+        $cantLimite = 110;
+
+       
+        if( strlen($listaComada) >= $cantLimite){
+            $listaComada = substr($listaComada,0,$cantLimite);
+            $listaComada = $listaComada.'...';
+        }
         return $listaComada;
     }
 

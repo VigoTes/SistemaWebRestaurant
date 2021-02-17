@@ -10,7 +10,7 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="id">Codigo</label>
-                <input type="text" class="form-control" id="CodEstudiante" name="CodEstudiante" placeholder="Codigo" value="{{ $cliente->codcliente}}" disabled>                
+                <input type="text" class="form-control" id="CodEstudiante" name="CodEstudiante" placeholder="Codigo" value="{{ $cliente->codcliente}}" readonly>                
                 </div>
             </div>  
 

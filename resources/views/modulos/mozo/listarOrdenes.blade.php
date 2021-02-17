@@ -2,7 +2,7 @@
 
 @section('contenido')
 
-<div class="container">
+
 
   <h3> LISTADO DE PEDIDOS PENDIENTES PARA EL MESERO</h3>
 
@@ -24,7 +24,7 @@
   
 
 
-        <form  action="{{route('orden.index')}}" style="margin-bottom: 20px;" >
+        <form  action="{{route('orden.listarParaMesero')}}" style="margin-bottom: 20px;" >
 
             <input type="hidden" id="indicador" name="indicador" value="1">
 
@@ -51,55 +51,48 @@
                   </select>  
 
                 </div>
-              
+              {{-- 
                 <div class="col">
                   <input class="form-control mr-sm-1" type="search" placeholder="Buscar por nombre" 
                     aria-label="Search" id="buscarpor" name = "buscarpor" value =""  >
                     
-                </div>
+                </div> --}}
                 <div class="col-sm">
                   <button class="btn btn-success my-2 my-sm-0" type="submit"  > <i class="fas fa-search"></i> Buscar</button>
                 </div>
 
               </div>
-
-
             </div>
-
-            
-
         </form>
 
   
-
-
   <table class="table">
           <thead class="thead-dark">
             <tr>
+              
+              <th scope="col">Codigo</th>
               <th scope="col">Sala</th>
               <th scope="col">Mesa</th>
-              <th scope="col"># Platos</th>
+              <th scope="col" style="width: 500px;"># Platos</th>
               
               <th scope="col">Hora pedido</th>
               <th scope="col">Estado</th>
               <th scope="col">Costo</th>
               <th scope="col"  style="text-align: center">¿Pago?</th>
               
-              <th scope="col">Opciones</th>
+              <th scope="col"  style="text-align: center">Opciones</th>
             </tr>
           </thead>
     <tbody>
+
       {{--     varQuePasamos  nuevoNombre                        --}}
       @foreach($ordenes as $itemOrden)
             <tr>
+              <td>{{$itemOrden->codOrden  }}</td>
               <td>{{$itemOrden->getNombreSala()  }}</td>
               <td style="text-align: center">{{$itemOrden->getNroMesaEnSala()  }}</td>
               <td>  {{$itemOrden->listarProductos()}}      </td>
-             
               <td style="text-align: center">{{$itemOrden->getHoraCreacion()  }}</td>
-              
-
-              
               <td style="text-align: center">{{$itemOrden->getEstado()}} 
                 <br>
                 <i class="{{$itemOrden->iconoEstadoSiguiente()}}"></i>
@@ -136,7 +129,7 @@
 {{-- {{$cliente->links()}}  --}}
 
 
-</div>
+
 
 
 @endsection

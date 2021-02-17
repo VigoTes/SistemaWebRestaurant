@@ -35,7 +35,27 @@ class Empleado extends Model
             ->orderBy('fechaHoraApertura','DESC') //OBTENEMOS EL ULTIMO EN FECHA O SEA DE HOY
             ->first();
 
-        return $reg;
+        
+            
+      
+        if(($reg) == '') //si la query no tuvo nada
+            return '0';
+
+        //vemos si el ultimo registro de hoy ya está cerrado
+        if($reg->fechaHoraCierre!='') //si ya está cerrada (tiene fechaHoraCierre), forzamos al cajero a crear nuevo reg
+            return '0'; 
+        
+        
+        date_default_timezone_set('America/Lima');
+        $date = Carbon::now()->format('Y-m-d');
+       
+        if(substr( $reg->fechaHoraApertura,0,10) != $date ) //si la fecha no es de hoy, 0
+            return '0';
+
+        
+            return $reg;
+
+        
 
     }
 

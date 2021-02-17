@@ -3,7 +3,6 @@
 @section('contenido')
 
 
-<div class="container">
 
   <h3> LISTADO DE PRODUCTO </h3>
 
@@ -89,8 +88,6 @@
 
 {{$producto->links()}} 
 
-
-</div>
 
 
 @endsection

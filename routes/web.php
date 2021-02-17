@@ -74,15 +74,16 @@ Route::post('/empleados/update/{id}','EmpleadoController@update')->name('emplead
 
 
 /* LISTAR ORDENES SEGUN PERSPECTIVAS */
-Route::get('/Ordenes/Cocina','OrdenController@listarParaCocina')->name('orden.listarParaCocina');
-Route::get('/Ordenes/Caja','OrdenController@listarParaCaja')->name('orden.listarParaCaja');
-Route::get('/Ordenes/Mesero','OrdenController@listarParaMesero')->name('orden.listarParaMesero');
+Route::get('/Ordenes/Cocina/','OrdenController@listarParaCocina')->name('orden.listarParaCocina');
+Route::get('/Ordenes/Caja/','OrdenController@listarParaCaja')->name('orden.listarParaCaja');
+Route::get('/Ordenes/Mesero/','OrdenController@listarParaMesero')->name('orden.listarParaMesero');
 
 Route::get('/Salas/Mesero','MesaController@listarMesa')->name('orden.listarSalas');
 
 
 // funcion para pasar al siguiente estado
 Route::get ('orden/{id}/next','OrdenController@siguiente')->name('orden.next');
+
 
 Route::get ('orden/{id}/finalizar','OrdenController@finalizar')->name('orden.finalizar');
 
@@ -91,6 +92,8 @@ Route::get ('orden/{id}/ventanaPago','OrdenController@ventanaPago')->name('orden
 
 Route::post('/pagarOrden/{id}','OrdenController@pagar')->name('orden.pagar');
 Route::get('/generarCDP/{id}','OrdenController@generarCDP');
+Route::get('/visualizarRegistro','CajaController@visualizarRegistro');
+Route::get('/visualizarOrdenes/{id}','CajaController@visualizarOrdenesDeRegistro');
 
 Route::get('/orden/mesa/{id}','OrdenController@ordenMesa');
 Route::post('/listarProductosCategoria/{id}','ProductoController@listarProductosCategoria');

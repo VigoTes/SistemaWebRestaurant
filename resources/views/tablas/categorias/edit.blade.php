@@ -8,7 +8,7 @@
     @csrf
     <div class="form-group">
             <label for="categoria_id">Codigo:</label>
-        <input type="text" class="form-control" id="categoria_id" name="categoria_id" value='{{$categoria->codCategoria}}' disabled>
+        <input type="text" class="form-control" id="categoria_id" name="categoria_id" value='{{$categoria->codCategoria}}' readonly>
     </div>
 
     <div class="form-group">

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Throwable;
+use App\Empleado;
 
 class CajaController extends Controller
 {
@@ -109,7 +110,7 @@ class CajaController extends Controller
        
     }
 
-    
+
     public function cerrarCaja(){
 
 
@@ -117,19 +118,21 @@ class CajaController extends Controller
 
             date_default_timezone_set('America/Lima');
 
-
-            $registros=RegistroCaja::where('codEmpleadoCajero','=',Auth::user()->empleado->codEmpleado)->where('estado','=',1)->get();
+            $registro = Empleado::getRegistroCaja();
+            
+            //codigo de felix
+            /* $registros=RegistroCaja::where('codEmpleadoCajero','=',Auth::user()->empleado->codEmpleado)->where('estado','=',1)->get();
             $registro=$registros[0];
+             */
+            
             $fechaHoraActual=new DateTime();
 
-            error_log('AAAAAAAAAAAAAAA');
-
-            $total=0;
+           
+            $total= $registro->saldoApertura;
             $ordenes=Orden::where('codRegistroCaja','=',$registro->codRegistroCaja)->get();
             foreach ($ordenes as $itemorden) {
                 $total+=$itemorden->costoTotal;
             }
-            error_log('bbbbbbbbbbbbbbbbbbbbbbbb');
 
             return view('modulos.caja.cierre',compact('registro','fechaHoraActual','total'));
 
@@ -147,15 +150,42 @@ class CajaController extends Controller
 
     public function guardarCerrarCaja(Request $request)
     {
-        date_default_timezone_set('America/Lima');
-        $registroCaja=RegistroCaja::find($request->codRegistroCaja);
-        $registroCaja->fechaHoraCierre=new DateTime();
-        $registroCaja->diferencia=$request->saldoCierre-$request->saldoReal;
-        $registroCaja->saldoCierre=(float)$request->saldoCierre+0;
-        $registroCaja->estado=0;
-        $registroCaja->save();
+        try {
+            date_default_timezone_set('America/Lima');
 
-        return redirect()->route('caja.index');
+            $registroCaja=RegistroCaja::findOrFail($request->codRegistroCaja);
+            $registroCaja->fechaHoraCierre=new DateTime();
+            $registroCaja->diferencia=$request->saldoCierre-$request->saldoReal;
+    
+            
+            $registroCaja->saldoCierre = $request->saldoCierre;
+            
+            $registroCaja->estado=0;
+            $registroCaja->save();
+    
+            return redirect()->route('caja.index');     
+            
+        } catch (\Throwable $th) {
+            error_log('
+            
+                '.$th.'
+            
+            ');    
+
+
+        }
+        
+    }
+
+    public function visualizarRegistro(){
+        $registros=RegistroCaja::all();
+        return view('modulos.caja.visualizarRegistrosCaja',compact('registros'));
+    }
+
+    public function visualizarOrdenesDeRegistro($id){
+        $registro=RegistroCaja::find($id);
+        $ordenes=Orden::where('codRegistroCaja','=',$id)->get();
+        return view('modulos.caja.visualizarOrdenesDeRegistro',compact('ordenes','registro'));
     }
 
 }

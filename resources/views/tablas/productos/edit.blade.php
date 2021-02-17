@@ -8,7 +8,7 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="id">Codigo</label>
-                <input type="text" class="form-control" id="codproducto" name="codproducto" placeholder="Codigo" value="{{ $producto->codProducto}}" disabled>                
+                <input type="text" class="form-control" id="codproducto" name="codproducto" placeholder="Codigo" value="{{ $producto->codProducto}}" readonly>                
                 </div>
                 <div class="form-group col-md-12">
                     <label for="nombre">Nombre</label>

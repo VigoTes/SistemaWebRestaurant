@@ -2,8 +2,6 @@
 
 @section('contenido')
 
-<div class="container">
-
   <h3> LISTADO DE PEDIDOS PENDIENTES </h3>
 
   @if(session('datos'))
@@ -24,8 +22,8 @@
   
 
 
-
-          <form style="margin-bottom: 20px" action="{{route('orden.index')}}">
+    
+          <form style="margin-bottom: 20px" action="{{route('orden.listarParaCaja')}}">
 
             <input type="hidden" id="indicador" name="indicador" value="1">
 
@@ -53,11 +51,7 @@
 
                 </div>
               
-                <div class="col-sm">
-                  <input class="form-control mr-sm-1" type="search" placeholder="Buscar por nombre" 
-                    aria-label="Search" id="buscarpor" name = "buscarpor" value =""  >
-                  
-                </div>
+                
 
                 <div class="col">
                   <button class="btn btn-success my-2 my-sm-0" type="submit"  >Buscar</button>
@@ -116,8 +110,8 @@
                 <a href="{{route('orden.ventanaPago',$itemOrden->codOrden)}}" class = "btn btn-success">  
                   <i class="fas fa-money-bill-wave"></i>
                 </a>
-                @else
-                <a href="/generarCDP/{{$itemOrden->codOrden}}" class = "btn btn-info">  
+                @else {{-- SI YA SE PAGÓ --}}
+                <a href="/generarCDP/{{$itemOrden->codOrden}}" target="_blank" class = "btn btn-info">  
                   <i class="fas fa-file-download"></i>
                 </a>
                 @endif
@@ -134,7 +128,7 @@
 {{-- {{$cliente->links()}}  --}}
 
 
-</div>
-
+{{-- </div>
+ --}}
 
 @endsection

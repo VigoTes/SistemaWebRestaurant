@@ -1,7 +1,7 @@
 @extends ('layout.plantilla')
 
 @section('contenido')
-<div class="container">
+
   <h3> LISTADO DE CATEGORIAS </h3>
 
 
@@ -88,5 +88,4 @@
  {{$categoria->links()}}
 
 
-</div>
 @endsection

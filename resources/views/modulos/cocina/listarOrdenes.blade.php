@@ -2,7 +2,6 @@
 
 @section('contenido')
 
-<div class="container">
 
   <h3> LISTADO DE PEDIDOS PENDIENTES </h3>
 
@@ -15,7 +14,7 @@
     </div>
   @ENDIF
 
-          <form class="form-inline my-2 my-lg-0" action="{{route('orden.index')}}">
+          <form class="form-inline my-2 my-lg-0" action="{{route('orden.listarParaCocina')}}">
 
             <input type="hidden" id="indicador" name="indicador" value="1">
 
@@ -110,11 +109,6 @@
 
                 
               
-                <div class="col-sm">
-                  <input class="form-control mr-sm-1" type="search" placeholder="Buscar por nombre" 
-                    aria-label="Search" id="buscarpor" name = "buscarpor" value =""  >
-                  
-                </div>
 
                 <div class="col">
                   <button class="btn btn-success my-2 my-sm-0" type="submit"  >Buscar</button>
@@ -184,8 +178,21 @@
 
 {{-- {{$cliente->links()}}  --}}
 
+<style>
+input[type='checkbox'] {
+    /* -webkit-appearance:none; */
+    width:25px;
+    height:25px;
+    background:white;
+    border-radius:15px;
+    border:2px solid #555;
+}
+input[type='checkbox']:checked {
+    background: #abd;
+}
 
-</div>
+
+</style>
 
 
 @endsection

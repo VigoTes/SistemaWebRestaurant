@@ -32,48 +32,67 @@ class OrdenController extends Controller
 
     }
 
-    //LISTA SOLAMENTE LAS ORDENES QUE ESTÁN YA PREPARADAS Y QUE DEBEN SER ENTREGADAS A LAS MESAS
-    //TAMBIEN LISTA LAS ORDENES QUE ESTÁN PAGADAS Y ENTREGADAS (Para poder finalizarlas y desocupar la mesa)
-    public function listarParaMesero(Request $request){
-        
-        $codSala = $request->sala; 
-        $buscarpor = $request->buscarpor;
-        if ($codSala != 0) { //si se seleccionó alguna sala
-        
-            $ordenes = Orden::where('codEstado','<','5')
-            ->where('mesa.codSala','=',$codSala)// PARA SALA ESPECIFICA
-            ->where('codEstado','=','3')
-            ->where('observaciones','like','%'.$buscarpor.'%')
-            ->join('mesa', 'orden.codMesa', '=', 'mesa.codMesa')
-            //->get()
-            ;
-            
-        }else{ //si se selecciono todas las salas
-        
-            $ordenes = Orden::where('codEstado','<','5')
-            ->where('codEstado','>=','3')
-            ->where('observaciones','like','%'.$buscarpor.'%')
-            //->get()
-            ;
-
-        }
 
 
 
-        /*(quiero las que estén (preparadas y no pagadas), 
+
+
+
+
+    /*  error_log('IFFFFFFFFFFF '); CODIGO DEPRECATO
+     (quiero las que estén (preparadas y no pagadas), 
                                       y (entregadas y pagadas)
         */
-        $ordenes->where(function ($query) {
+        /* $ordenes->where(function ($query) {
             $query->where('codEstado', '=','3') //PREPARADAS
-                ->where('estadoPago', '=', '0'); // Y NO PAGADAS
+                ->where('estadoPago', '=', '0'); // Y NO PAGADAS -- ESTO ESTABA MAL XD
         })->orWhere(function($query) { //AND
             $query->where('codEstado','=', '4')   //ENTREGADAS
                 ->where('estadoPago', '=', '1');	//Y PAGADAS
-        });
+        }); */
 
 
-        $ordenes = $ordenes->orderBy('codEstado','ASC')->get();
-     
+    //LISTA SOLAMENTE LAS ORDENES QUE ESTÁN YA PREPARADAS ( DEBEN SER ENTREGADAS A LAS MESAS)
+    //TAMBIEN LISTA LAS ORDENES QUE ESTÁN PAGADAS Y ENTREGADAS (Para poder finalizarlas y desocupar la mesa)
+    public function listarParaMesero(Request $request){
+
+        $codSala = $request->sala; 
+        
+        $buscarpor = $request->buscarpor;
+        if ($codSala != 0) { //si se seleccionó alguna sala
+           
+            $ordenesSQL = DB::select('
+                select orden.* from `orden` 
+                inner join `mesa` on `orden`.`codMesa` = `mesa`.`codMesa` 
+                    where `codEstado` < 5 
+                    and ((`codEstado` = 3) or (`codEstado` = 4 and `estadoPago` = 1) )
+                    and `mesa`.`codSala` = "'.$codSala.'" 
+                    and `codEstado` >= 3 
+                    order by codEstado ASC
+                ');
+            
+
+            
+        }else{ //si se selecciono todas las salas
+            $ordenesSQL = DB::select('
+            select orden.* from `orden` 
+                where `codEstado` < 5 
+                and ((`codEstado` = 3) or (`codEstado` = 4 and `estadoPago` = 1) )
+                and `codEstado` >= 3 
+                order by codEstado ASC
+            ');
+        }
+
+       
+        //PASAMOS LAS SQL A UNA FORMA CON MODELOS PARA PODER USAR SUS FUNCIONES
+        $ordenes = [];
+        for ($i=0; $i < count($ordenesSQL) ; $i++) { 
+            $item = Orden::findOrFail($ordenesSQL[$i]->codOrden);
+            array_push($ordenes,$item);
+        }
+        
+       /*  return $ordenes; */
+        
         $listaSalas = Sala::All();
         return view('modulos.mozo.listarOrdenes',compact('ordenes','listaSalas','codSala'));
         
@@ -89,7 +108,7 @@ class OrdenController extends Controller
         $CB4 = $request->CheckBox_4;
         $CB5 = $request->CheckBox_5;
         $vectorCB = array($CB1,$CB2,$CB3,$CB4,$CB5);
-    
+        
         
         if($request->indicador==1){ //indicador está en 1 cuando se llega a esta funcion a traves del botón
         }else{
@@ -100,7 +119,7 @@ class OrdenController extends Controller
 
         
         $codSala = $request->sala; 
-        $buscarpor = $request->buscarpor;
+        $buscarpor = '';
         if ($codSala != 0) { //si se seleccionó alguna sala
         
             $ordenes = Orden::where('codEstado','<','5')
@@ -144,42 +163,72 @@ class OrdenController extends Controller
     public function listarParaCaja(Request $request)
     {
         
-    
-        
-        if($request->indicador==1){ //indicador está en 1 cuando se llega a esta funcion a traves del botón
-        }else{
-            $vectorCB=array("on","on","on","on","on");
-        }
-        
-        $codSala = $request->sala; 
-        $buscarpor = $request->buscarpor;
-        if ($codSala != 0) { //si se seleccionó alguna sala
-        
-            $ordenes = Orden::where('codEstado','<','5')
-            ->where('mesa.codSala','=',$codSala)
-            ->where('observaciones','like','%'.$buscarpor.'%')
-            ->join('mesa', 'orden.codMesa', '=', 'mesa.codMesa')
-            ->orderBy('estadoPago','ASC')  
-            ->orderBy('codEstado','ASC')  
-            ->get();
+        try {
             
-        }else{ //si se selecciono todas las salas
-        
-            $ordenes = Orden::where('codEstado','<','5')
-            ->where('observaciones','like','%'.$buscarpor.'%')
-            ->orderBy('estadoPago','ASC')  //primero salgan las no pagadas
-            ->orderBy('codEstado','ASC')   //primer salgan las que estan mas recientes
-            ->get();
+          
 
+
+            
+            $codSala = $request->sala; 
+            $buscarpor = '';
+            if($request->buscarpor==''){
+                $buscarpor = $request->buscarpor;
+            }
+
+            if ($codSala != 0) { //si se seleccionó alguna sala
+            
+                $ordenes = Orden::where('codEstado','<','5')
+                ->where('mesa.codSala','=',$codSala)
+                ->where('observaciones','like','%'.$buscarpor.'%')
+                ->join('mesa', 'orden.codMesa', '=', 'mesa.codMesa')
+                ->orderBy('estadoPago','ASC')  
+                ->orderBy('codEstado','ASC')  
+                ->get();
+                
+            }else{ //si se selecciono todas las salas
+            
+                $ordenes = Orden::where('codEstado','<','5')
+                ->where('observaciones','like','%'.$buscarpor.'%')
+                ->orderBy('estadoPago','ASC')  //primero salgan las no pagadas
+                ->orderBy('codEstado','ASC')   //primer salgan las que estan mas recientes
+                ->get();
+
+            }
+            
+            
+            $listaSalas = Sala::All();
+            return view('modulos.caja.listarOrdenes',compact('ordenes','listaSalas','codSala','buscarpor'));
+        } catch (\Throwable $th) {
+            error_log('Ha ocurrido un error en el OrdenController LISTAR PARA CAJA
+            
+            
+            '.$th.'
+            
+            
+            
+            
+            ');
         }
-        
-        
-        $listaSalas = Sala::All();
-        return view('modulos.caja.listarOrdenes',compact('ordenes','listaSalas','codSala','vectorCB'));
+
+
     }
 
     public function ventanaPago($id)
     {
+
+        //si el cajero no ha aperturado su caja, que le bote error
+        $regCaja = Empleado::getRegistroCaja();
+        if($regCaja=='0') // si no ha iniciado un registro caja
+        {
+            //lo retornamos
+            error_log('ASLKDKDASKDSA KADSKDSAKSAD   '.$regCaja.' 
+            
+            
+            ');
+            return redirect()->route('caja.index')->with('datos','¡Tienes que aperturar tu caja antes de procesar pagos!');
+        }
+
+
         $orden = Orden::findOrFail($id);
         $listaOrdenes = DetalleOrden::where('codOrden','=',$id)->get();
         $listaClientes = Cliente::All();
@@ -414,7 +463,11 @@ class OrdenController extends Controller
 
             DB::commit(); 
 
-            return redirect()->route('orden.listarParaMesero');
+            return redirect()
+                    ->route('orden.listarParaMesero')
+                    ->with('datos','¡Orden '.$orden->codOrden.' finalizada y mesa '.$mesa->nroEnSala.' liberada!');
+
+
         }
         catch(Throwable $th){
             error_log('Ha ocurrido un error en el OrdenController finalizar
@@ -461,27 +514,31 @@ class OrdenController extends Controller
     }
 
 
+  
     public function generarCDP($id){
-
+        date_default_timezone_set('America/Lima');
         //COMANDO PARA EL COMPLEMENTO PARA PDF
         //composer require barryvdh/laravel-dompdf
         //COMPOSER: es un gestor para dependencias de laravel en la nube (se guarda en vendor)
 
         //$pdf = \PDF::loadView('modulos.caja.CDP')->setPaper(array(0, 0, 301, 623.622), 'portrait');
-
         $empresa=Empresa::getEmpresa();
         $orden=Orden::find($id);
         $detalles=DetalleOrden::where('codOrden','=',$orden->codOrden)->get();
+        $fechaHora=new DateTime();
 
         $pdf = \PDF::loadView('modulos.caja.CDP',array('empresa'=>$empresa, 
                                                         'orden'=>$orden,
-                                                        'detalles'=>$detalles));
+                                                        'detalles'=>$detalles,
+                                                        'fechaHora'=>$fechaHora,
+                                                        'tipo'=>$orden->codTipoCDP));
         $pdf->setPaper(array(0, 0, 301, 623.622), 'portrait');
         //$pdf->set_option('defaultFont', 'Courier');
         
         
         //var_dump($data[0]->elementos->descripcionElemento);
 
-        return $pdf->download('dinamicoV1.pdf');
+        //return $pdf->download('dinamicoV1.pdf');
+        return $pdf->stream();
     }
 }

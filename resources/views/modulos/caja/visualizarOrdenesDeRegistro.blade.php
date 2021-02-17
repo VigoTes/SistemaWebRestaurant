@@ -5,28 +5,8 @@
 <div class="card-body">
     
 
-    <div class="well"><H3 style="text-align: center;">ENTRADAS DE CAJA</H3></div>
+    <div class="well"><H3 style="text-align: center;">ORDENES DE {{$registro->caja->nombre}} ({{$registro->fechaHoraApertura}})</H3></div>
     <br>
-    <div class="form-group row">
-        <div class="col-sm-1">
-            <label class="col-form-label float-right">Nr Caja:</label>
-        </div>
-        <div class="col-sm-1">
-            <input type="number" class="form-control" value="{{$registro->caja->codCaja}}" readonly>
-        </div>
-        <div class="col-sm-2">
-            <label class="col-form-label float-right">Monto Apertura:</label>
-        </div>
-        <div class="col-sm-2">
-            <input type="number" step="any" class="form-control" value="{{$registro->saldoApertura}}" readonly>
-        </div>
-        <div class="col-sm-2">
-            <label class="col-form-label  float-right">Monto Actual:</label>
-        </div>
-        <div class="col-sm-2">
-            <input type="number" step="any" class="form-control" value="{{$total}}" readonly>
-        </div>
-    </div>
 
     <table class="table table-bordered table-hover datatable">
         <thead>
@@ -55,7 +35,6 @@
         </tbody>  
     </table>
     <br>
-    <a href="{{route('caja.cierre')}}" class="btn btn-danger"  style="margin-left:600px;"><i class="entypo-pencil"></i>Cerrar Caja</a>
     
   </div>
 

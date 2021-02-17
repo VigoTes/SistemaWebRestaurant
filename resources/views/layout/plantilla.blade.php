@@ -159,6 +159,7 @@
           @endif
 
           @if(Auth::id()=='1')
+          
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -192,7 +193,12 @@
                   <p>Menú de Hoy</p>
                 </a>
               </li>
-              
+              <li class="nav-item">
+                <a href="/visualizarRegistro" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Ver Registro</p>
+                </a>
+              </li>  
 
             </ul>
 
