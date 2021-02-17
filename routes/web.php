@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Empresa;
+use App\Producto;
 use Illuminate\Support\Facades\Hash;
 /* RUTAS PARA INGRESO Y REGISTRO DE USUARIO Y CLIENTE */
 
@@ -32,8 +33,11 @@ Route::get('/', function () {
 /* RUTAS SERVICIOS */
 Route::get('/obtenerParametro/{id}','ParametroController@obtener')->name('parametros.obtener');
 
-
-
+/* TESTEAR DB */
+Route::get('/testeoDB', function()
+{
+    return Empresa::all();
+});
 
 
 
