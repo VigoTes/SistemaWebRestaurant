@@ -3,13 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ 
   <title>
     Sistema Restaurant
     
-
+    
   </title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/ico" href="/ICONO.ico" />
 
   <!-- Font Awesome -->
  <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
@@ -27,7 +29,10 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <link rel="stylesheet" href="/adminlte/dist/css/sweetalert.css">
+  <link rel="stylesheet" href="/css/style.css"><!-- esto añadi :'v' -->
+ 
 
+  
   @yield('estilos')
 
 </head>
@@ -117,7 +122,7 @@
           @if( App\Empleado::getEmpleadoLogeado()->codTipoEmpleado=='3' || Auth::id()=='1'  ) {{-- admin 1 --}} 
           <li class="nav-item">
             <a href="{{route('orden.listarSalas')}}" class="nav-link">
-              <i class="fab fa-free-code-camp"></i>
+              <i class="fas fa-concierge-bell"></i>
               <p>Vista Mesero Salas</p>
             </a>
           </li>
@@ -125,7 +130,7 @@
 
           <li class="nav-item">
             <a href="{{route('orden.listarParaMesero')}}" class="nav-link">
-              <i class="fab fa-free-code-camp"></i>
+              <i class="fas fa-concierge-bell"></i>
               <p>Vista Mesero Ordenes</p>
             </a>
           </li>
@@ -136,7 +141,7 @@
           @if( App\Empleado::getEmpleadoLogeado()->codTipoEmpleado=='1'  || Auth::id()=='1')
           <li class="nav-item">
             <a href="{{route('orden.listarParaCocina')}}" class="nav-link">
-              <i class="fab fa-free-code-camp"></i>
+              <i class="fas fa-dumpster-fire"></i>
               <p>Vista Cocina</p>
             </a>
           </li>
@@ -145,14 +150,14 @@
           @if( App\Empleado::getEmpleadoLogeado()->codTipoEmpleado=='2'  || Auth::id()=='1')  
           <li class="nav-item">
             <a href="{{route('orden.listarParaCaja')}}" class="nav-link">
-              <i class="fab fa-free-code-camp"></i>
+              <i class="fas fa-cash-register"></i>
               <p>Vista Cajero</p>
             </a>
           </li>
 
           <li class="nav-item">
             <a href="{{route('caja.index')}}" class="nav-link">
-              <i class="fab fa-free-code-camp"></i>
+              <i class="fas fa-list-ul"></i>
               <p>Cuadre de Caja</p>
             </a>
           </li>
@@ -202,7 +207,26 @@
 
             </ul>
 
-
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  Reportes
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{route('orden.reportes.clientes')}}" class="nav-link">
+                    <i class="far fa-address-card nav-icon"></i>
+                    <p>Clientes Frecuentes </p>
+                  </a>
+                </li>
+                
+                
+               
+  
+              </ul>
 
 
           @endif
@@ -322,6 +346,91 @@
 
 <!-- PARA EL CODIGO DE BARRAS-->
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js" type="text/javascript"></script>
+
+<?php 
+  $fontSize = '24pt';
+?>
+<style>
+/* PARA COD ORDEN CON CIRCULITOS  */
+
+  span.grey {
+    background: #000000;
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    color: #fff;
+    display: inline-block;
+    font-weight: bold;
+    line-height: 1.6em;
+    margin-right: 15px;
+    text-align: center;
+    width: 1.6em; 
+    font-size : {{$fontSize}};
+  }
+  
+
+
+  span.red {
+  background: red;
+   border-radius: 0.8em;
+  -moz-border-radius: 0.8em;
+  -webkit-border-radius: 0.8em;
+  color: #ffffff;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 1.6em;
+  margin-right: 15px;
+  text-align: center;
+  width: 1.6em; 
+  font-size : {{$fontSize}};
+}
+
+
+span.green {
+  background: #5EA226;
+  border-radius: 0.8em;
+  -moz-border-radius: 0.8em;
+  -webkit-border-radius: 0.8em;
+  color: #ffffff;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 1.6em;
+  margin-right: 15px;
+  text-align: center;
+  width: 1.6em; 
+  font-size : {{$fontSize}};
+}
+
+span.blue {
+  background: #5178D0;
+  border-radius: 0.8em;
+  -moz-border-radius: 0.8em;
+  -webkit-border-radius: 0.8em;
+  color: #ffffff;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 1.6em;
+  margin-right: 15px;
+  text-align: center;
+  width: 1.6em; 
+  font-size : {{$fontSize}};
+}
+
+span.pink {
+  background: #EF0BD8;
+  border-radius: 0.8em;
+  -moz-border-radius: 0.8em;
+  -webkit-border-radius: 0.8em;
+  color: #ffffff;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 1.6em;
+  margin-right: 15px;
+  text-align: center;
+  width: 1.6em; 
+  font-size : {{$fontSize}};
+}
+   </style>
 
 </body>
 </html>

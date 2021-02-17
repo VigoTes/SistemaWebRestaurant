@@ -88,9 +88,19 @@
       {{--     varQuePasamos  nuevoNombre                        --}}
       @foreach($ordenes as $itemOrden)
             <tr>
-              <td>{{$itemOrden->codOrden  }}</td>
+              <td> <h1>
+                <span class="grey">{{$itemOrden->codOrden }}</span>
+                
+              </h1></td>
               <td>{{$itemOrden->getNombreSala()  }}</td>
-              <td style="text-align: center">{{$itemOrden->getNroMesaEnSala()  }}</td>
+              <td style="text-align: center">
+                <h1>
+                  <span class="red">{{$itemOrden->getNroMesaEnSala()  }}</span>
+                  
+                </h1>
+                
+              
+              </td>
               <td>  {{$itemOrden->listarProductos()}}      </td>
               <td style="text-align: center">{{$itemOrden->getHoraCreacion()  }}</td>
               <td style="text-align: center">{{$itemOrden->getEstado()}} 
@@ -107,11 +117,13 @@
               <td style="text-align: center">
 
 
-                @if($itemOrden->estadoPago=='0')
+                @if($itemOrden->codEstado=='3') 
+                {{-- SI ESTAN PREPARADAS, SÍ O SÍ LAS TENGO QUE ENTREGAR PRIMERO --}}
                   <a href="{{route('orden.next',$itemOrden->codOrden)}}" class = "btn btn-success">  
                     <i class="{{$itemOrden->iconoEstadoSiguiente()}}"> Entregar</i>
                   </a>  
-                @else
+                @else 
+                {{-- SI NO LO ESTÁN, ENTONCES ES PQ ESTÁN ENTREGADAS Y PAGADAS --}}
                   <a href="{{route('orden.finalizar',$itemOrden->codOrden)}}" class = "btn btn-success">  
                     <i class="fas fa-archive"> Finalizar y Liberar Mesa</i>
                   </a>  
@@ -127,7 +139,6 @@
   </table>
 
 {{-- {{$cliente->links()}}  --}}
-
 
 
 

@@ -2,18 +2,9 @@
 
 @section('contenido')
 
-<script type="text/javascript"> 
-          
-    function validarRegistro() 
-        {
-            return true;
-              
-        }
-    
-</script>
 
 <br>
-<form id="frmcaja" name="frmcaja" action="/caja/cierre/save" onsubmit="return validarRegistro()"
+<form id="frmcaja" name="frmcaja" action="/caja/cierre/save" onsubmit="return validarregistro()"
         class="form-horizontal form-groups-bordered" method="post" >
     @csrf
     <input id="codRegistroCaja" type="hidden" name="codRegistroCaja" value="{{ $registro->codRegistroCaja }}" >
@@ -40,7 +31,7 @@
                     </div>
                     <div class="col-sm-3">
                         <label class="col-form-label">Saldo Real:</label> (S/)
-                        <input type="number" step="any" class="form-control" id="saldoReal" name="saldoReal" placeholder="Monto...">
+                        <input type="number" step="any" class="form-control" id="saldoReal" name="saldoReal" placeholder="Monto..." value="">
                     </div>
                 </div>
             </div><!-- /.card-body -->
@@ -50,5 +41,22 @@
         </div>
     </div>
 </form>
+
+
+<script type="text/javascript">   
+    function validarregistro() 
+        {
+            if(document.getElementById("saldoReal").value == ""){
+                alert("Ingrese saldo real");
+                $("#saldoReal").focus();
+            }
+            else{
+                return true;
+            }
+                
+            return false;
+        }
+    
+</script>
 
 @endsection

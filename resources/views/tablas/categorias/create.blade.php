@@ -1,10 +1,25 @@
 @extends('layout.plantilla')
 @section('contenido')
 
+<script type="text/javascript"> 
+          
+  function validar() {
+    if (document.getElementById("nombre").value == ""){
+        alert("Ingrese nombre de la categoria");
+        $("#nombre").focus();
+    }
+    else{
+        return true; // enviamos el formulario	
+    }
+    return false;
+  }
+  
+</script>
+
 
 <div class="container">
 
-  <form method = "POST" action = "{{ route('categoria.store') }}"  >
+  <form method = "POST" action = "{{ route('categoria.store') }}" onsubmit="return validar()" >
     @csrf   
   <div class="form-group">
     <label for="nombre">Nombre</label>
@@ -17,18 +32,13 @@
     @enderror  
  
   </div>
+  <!--
   <div class="form-group">
     <label for="categoria">Categoria</label>
     <select class="form-control @error('codMacroCategoria') is-invalid @enderror" id="codMacroCategoria" name="codMacroCategoria" >
-      @foreach($macros as $itemMacro)
-        <option value="{{$itemMacro['codMacroCategoria']}}"> 
-            {{$itemMacro['nombre']}}
-        </option>
-
-      @endforeach
     </select>
   </div>
- 
+  -->
   
     <button type="submit" class="btn btn-primary">   <i class="fas fa-save"> </i> Grabar </button>
     <a href = "{{route('categoria.index')}}" class = "btn btn-danger">

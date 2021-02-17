@@ -244,10 +244,12 @@ class OrdenController extends Controller
             DB::beginTransaction();        
             $orden = Orden::findOrFail($id);
 
-            
+
 
             if(($request->clientes) == '-1'  ){ //si no se seleccionó a un cliente frecuence
                 // registramos al cliente nuevo
+
+
                 $cliente=new Cliente();
                 $cliente->nombres=$request->nombres;
                 $cliente->apellidos=$request->apellidos;
@@ -299,6 +301,15 @@ class OrdenController extends Controller
             
             ');
             DB::rollback();
+
+            $msjError = '';
+            if( str_contains($th,'Integrity constraint violation'))
+                $msjError = 'Error: El DNI ingresado ya se encuentra registrado como cliente frecuente. ';
+
+
+            return redirect()->route('orden.listarParaCaja')->with('datos','Ha ocurrido un error
+                     inesperado, no se pudo completar el pago. '.$msjError);
+
         }
 
     }
@@ -333,9 +344,13 @@ class OrdenController extends Controller
             $orden->codMesa=$request->codMesa;
             $orden->DNI=null;
             
+            $obs = $request->txtobservaciones;
+            if( is_null($obs) )
+                $obs='';
+
             $orden->codEmpleadoMesero= Empleado::getEmpleadoLogeado()->codEmpleado;
             $orden->codEstado=1;
-            $orden->observaciones=$request->txtobservaciones;
+            $orden->observaciones=$obs;
             $orden->descuento=null;
             $orden->codMedioPago=null;
             $orden->codTipoPago=null;
@@ -373,7 +388,7 @@ class OrdenController extends Controller
             $mesa->save();
             
             DB::commit();                
-            return redirect('/Salas/Mesero');
+            return redirect()->route('orden.listarSalas')->with('datos','Orden creada exitosamente!');
         } 
         catch (Throwable $th) {
             error_log('Ha ocurrido un error en el OrdenController STORE
@@ -541,4 +556,46 @@ class OrdenController extends Controller
         //return $pdf->download('dinamicoV1.pdf');
         return $pdf->stream();
     }
+
+
+
+
+
+
+    //reporta los clientes y la cantidad de ordenes que pidieron
+    public function reportePorClientes(){
+
+        $listaX1 =    DB::select("
+        select CONCAT(C.nombres,' ',C.apellidos) as 'name', COUNT(O.codOrden) as 'cant' 
+            from cliente C  
+                inner join ORDEN O on C.DNI = O.DNI
+                group BY CONCAT(C.nombres,' ',C.apellidos)"
+            );
+            
+        $listaX2 =    DB::select("
+        select CONCAT(C.nombres,' ',C.apellidos) as 'name', SUM(O.costoTotal) as 'cant' 
+            from cliente C  
+                inner join ORDEN O on C.DNI = O.DNI
+                group BY CONCAT(C.nombres,' ',C.apellidos)"
+            );
+        
+            
+        $fechaI = '2020-01-02';
+        $fechaF = '2020-05-20';
+     
+        return view('tablas.reportes.reporteOrdenesXCliente',compact('listaX1','listaX2','fechaI','fechaF'));
+    }
+    
+    //reporta los clientes y la cantidad de dinero que han gastado en el rest
+    public function reportePorClientesDinero(){
+
+        
+        $fechaI = '2020-01-02';
+        $fechaF = '2020-05-20';
+     
+        return view('tablas.reportes.reporteDineroXCliente',compact('listaX','fechaI','fechaF'));
+    }
+    
+    
+
 }

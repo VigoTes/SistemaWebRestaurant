@@ -1,4 +1,4 @@
-body { 
+/*body { 
   color: #000; 
   font-family: 'Open Sans', sans-serif;
   padding: 0px !important;
@@ -6,7 +6,10 @@ body {
   font-size:13px; 
   direction: ltr;
 }
-.alert
+ */
+
+/* ESTE ES EL QUE ME FREGABA */
+/* .alert
 {
   width: 300px;
   position: fixed;
@@ -15,7 +18,7 @@ body {
   right: 10px;
   z-index: 999999 !important;
 }
-
+ */
 .alerta{
   padding: 15px;
   margin-bottom: 20px;
@@ -143,3 +146,7 @@ i.normal {
   color: #b94a48;
 }
 
+[class*=sidebar-dark-]
+{
+	background-color: #591616;
+}

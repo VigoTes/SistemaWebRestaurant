@@ -4,23 +4,14 @@
 
   <h3> LISTADO DE PEDIDOS PENDIENTES </h3>
 
-  @if(session('datos'))
-    <div class ="alert alert-warning alert-dismissible fade show mt-3" role ="alert">
-        {{session('datos')}}
-      <button type = "button" class ="close" data-dismiss="alert" aria-label="close">
-          <span aria-hidden="true"> &times;</span>
-      </button>
-    </div>
-  @ENDIF
-
-
-  
-
-
-
-  
-  
-
+          @if(session('datos'))
+            <div class ="alert alert-warning alert-dismissible fade show mt-3" role ="alert">
+                {{session('datos')}}
+              <button type = "button" class ="close" data-dismiss="alert" aria-label="close">
+                  <span aria-hidden="true"> &times;</span>
+              </button>
+            </div>
+          @ENDIF
 
     
           <form style="margin-bottom: 20px" action="{{route('orden.listarParaCaja')}}">
@@ -71,6 +62,7 @@
   <table class="table">
           <thead class="thead-dark">
             <tr>
+              <th scope="col">Cod Orden</th>
               <th scope="col">Sala</th>
               <th scope="col">Mesa</th>
               <th scope="col"># Platos</th>
@@ -86,8 +78,25 @@
       {{--     varQuePasamos  nuevoNombre                        --}}
       @foreach($ordenes as $itemOrden)
             <tr>
+              <td>
+                <h1>
+                  <span class="grey">{{$itemOrden->codOrden }}</span>
+                  
+                </h1>
+
+              </td>
+              
               <td>{{$itemOrden->getNombreSala()  }}</td>
-              <td style="text-align: center">{{$itemOrden->getNroMesaEnSala()  }}</td>
+
+              <td style="text-align: center">
+                <h1>
+                  <span class="red">{{$itemOrden->getNroMesaEnSala()  }}</span>
+                  
+                </h1>
+                
+              
+              </td>
+
               <td>  {{$itemOrden->listarProductos()}}      </td>
               <td style="text-align: center">{{$itemOrden->getHoraCreacion()  }}</td>
               <td style="text-align: center">{{$itemOrden->getEstado()}}
@@ -130,5 +139,6 @@
 
 {{-- </div>
  --}}
+
 
 @endsection

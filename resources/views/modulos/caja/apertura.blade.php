@@ -2,12 +2,20 @@
 
 @section('contenido')
 
-<script type="text/javascript"> 
-          
+<script type="text/javascript">   
     function validarregistro() 
         {
-            
+            if (document.getElementById("codCaja").value == "0"){
+                alert("Seleccione una caja");
+            }
+            else if(document.getElementById("saldoApertura").value == ""){
+                alert("Ingrese monto inicial de apertura");
+                $("#saldoApertura").focus();
+            }
+            else{
                 document.frmcaja.submit(); // enviamos el formulario	
+            }
+                
             
         }
     
@@ -53,7 +61,7 @@
                     </div>
                     <div class="col-sm-4">
                         <label class="col-form-label">Monto Inicial:</label> (S/)
-                        <input type="number" step="any" class="form-control" id="saldoApertura" name="saldoApertura" placeholder="Monto..." >
+                        <input type="number" step="any" class="form-control" id="saldoApertura" name="saldoApertura" placeholder="Monto..." value="">
                     </div>
                 </div>
             </div><!-- /.card-body -->

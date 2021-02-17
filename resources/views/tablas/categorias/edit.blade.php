@@ -1,9 +1,23 @@
 @extends('layout.plantilla')
 @section('contenido')
 
+<script type="text/javascript"> 
+          
+  function validar() {
+    if (document.getElementById("nombre").value == ""){
+        alert("Ingrese nombre de la categoria");
+        $("#nombre").focus();
+    }
+    else{
+        return true; // enviamos el formulario	
+    }
+    return false;
+  }
+  
+</script>
    
 <div class="container">
-  <form method="POST" action="{{route('categoria.update',$categoria->codCategoria)}}">
+  <form method="POST" action="{{route('categoria.update',$categoria->codCategoria)}}"  onsubmit="return validar()" >
     @method('put')
     @csrf
     <div class="form-group">

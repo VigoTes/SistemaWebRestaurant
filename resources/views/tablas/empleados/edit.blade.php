@@ -2,6 +2,7 @@
 @section('contenido')
 
 
+
 <div class="container">
 
   <form method = "POST" action = "{{ route('empleados.update',$empleado->codEmpleado) }}"  onsubmit="return validar()" >
@@ -47,7 +48,7 @@
           <div class="col">  
             <label for="telefono">Fecha Fin de Contrato</label>
             <div class="input-group date form_date " data-date-format="yyyy-mm-dd" data-provide="datepicker">
-              <input type="text"  class="form-control" name="fechF" id="fechF"
+              <input type="text"  class="form-control" name="fechaF" id="fechaF"
                  value="{{$empleado->fechaFinContrato}}"  style="font-size: 10pt;"> 
               <div class="input-group-btn">                                        
                   <button class="btn btn-primary date-set" type="button">
@@ -81,14 +82,14 @@
           <div class="col">  
             <div class="form-group">
               <label for="contraseña">Contraseña</label>
-              <input type="password"  class="form-control @error('contraseña') is-invalid @enderror" id="contraseña" name="contraseña" placeHolder="Ingrese contraseña">
+              <input type="password"  class="form-control @error('contraseña') is-invalid @enderror" id="contraseña" name="contraseña" placeHolder="Ingrese contraseña" value="">
               
             </div>
           </div>
           <div class="col">  
             <div class="form-group">
               <label for="contraseña2">Repetir Contraseña</label>
-              <input type="password" class="form-control @error('contraseña2') is-invalid @enderror" id="contraseña2" name="contraseña2" placeHolder="Repita la Contraseña">
+              <input type="password" class="form-control @error('contraseña2') is-invalid @enderror" id="contraseña2" name="contraseña2" placeHolder="Repita la Contraseña" value="">
               
             </div>
     
@@ -128,70 +129,54 @@
 </form>
 
 </div>
-
-<script>
-       
-    function validar(){
-      msj='';
-
-      user=$("#nombres").val(); 
-      if(user=='')
-        msj='Debe ingresar los nombres del empleado';
-
-      if($("#fechaI").val() =='')
-        msj='Debe ingresar la fecha Inicio';
-      
-      if($("#fechaF").val() =='')
-        msj='Debe ingresar la fecha Final';
-      
-      if($("#usuario").val() =='')
-        msj='Debe ingresar el usuario';
-      
-      if($("#email").val() =='')
-        msj='Debe ingresar el email';
- 
-      if($("#codTipoEmpleado").val() == '0')
-        msj='Debe ingresar el puesto de trabajo';
-        
-
-      contraseña=$("#contraseña").val(); 
-      if(contraseña=='')
-        msj='Debe ingresar la contraseña.';
-      
-
-      contraseña2=$("#contraseña2").val(); 
-      if(contraseña2=='')
-        msj='Ingrese la contraseña repetida.';
-      
-
-     
-
-
-      apellidos=$("#apellidos").val(); 
-      if(apellidos=='')
-        msj='Debe ingresar los apellidos';
-      
-
-        telefono=$("#telefono").val(); 
-      if(telefono=='')
-        msj='Debe ingresar el telefono';
-      
-      
-      
-      
-
-
-
-      if(msj!=''){
-        alert(msj);
-        return false;
-      }
-
-      
-      return true;
+<script type="text/javascript"> 
+          
+  function validar() {
+    //alert('entra?');
+    if (document.getElementById("nombres").value == ""){
+      alert("Ingrese nombres del empleado");
+      $("#nombres").focus();
     }
-
-
-
+    else if(document.getElementById("apellidos").value == ""){
+      alert("Ingrese apellidos del empleado");
+      $("#apellidos").focus();
+    }
+    else if(document.getElementById("telefono").value == ""){
+      alert("Ingrese telefono del empleado");
+      $("#telefono").focus();
+    }
+    else if(document.getElementById("fechaI").value == ""){
+      alert("Ingrese fecha Inicial del contrato");
+      $("#fechaI").focus();
+    }
+    else if(document.getElementById("fechaF").value == ""){
+      alert("Ingrese fecha Final del contrato");
+      $("#fechaF").focus();
+    }
+    else if(document.getElementById("usuario").value == ""){
+      alert("Ingrese usuario del empleado");
+      $("#usuario").focus();
+    }
+    else if(document.getElementById("email").value == ""){
+      alert("Ingrese email del empleado");
+      $("#email").focus();
+    }
+    else if (document.getElementById("contraseña").value == ""){
+      alert("Ingrese contraseña del empleado");
+      $("#contraseña").focus();
+    }
+    else if (document.getElementById("contraseña").value != document.getElementById("contraseña2").value){
+      alert("Las contraseñas no coinciden");
+      $("#contraseña").focus();
+    }
+    else if (document.getElementById("codTipoEmpleado").value == "0"){
+      alert("Seleccione tipo de empleado");
+    }
+    else{
+      return true; // enviamos el formulario	
+    }
+    return false;
+  }
+  
 </script>
 @endsection

@@ -24,6 +24,13 @@ class Parametro extends Model
     public static function pasarASiguiente($tipo_id){
         try{
             $par = Parametro::findOrFail($tipo_id);
+
+            //CASO EXTREMO SE ACABÓ LA NUMERACION
+            if($par->valor == '999999'){
+                $par->valor = '000000'; //cuando lo pase será 1
+                $par->serie=$par->serie + 1;
+            }
+
             $par->valor = $par->valor + 1;
             $par->save();
 

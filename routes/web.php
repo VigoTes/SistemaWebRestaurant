@@ -81,6 +81,7 @@ Route::get('/Ordenes/Mesero/','OrdenController@listarParaMesero')->name('orden.l
 Route::get('/Salas/Mesero','MesaController@listarMesa')->name('orden.listarSalas');
 
 
+
 // funcion para pasar al siguiente estado
 Route::get ('orden/{id}/next','OrdenController@siguiente')->name('orden.next');
 
@@ -123,6 +124,13 @@ Route::get ('Estudiante/{id}/confirmar','EstudianteController@confirmar')->name(
 Route::get('EncontrarProducto/{producto_id}', 'CabeceraVentaController@ProductoCodigo');
 /* datos tipos */
 Route::get('EncontrarTipo/{codigo}', 'CabeceraVentaController@PorTipo');
+
+
+/* REPORTES */
+Route::get('/reportes/clientesPorOrdenes/','OrdenController@reportePorClientes')->name('orden.reportes.clientes');
+
+Route::get('/reportes/dineroPorClientes/','OrdenController@reportePorClientesDinero')->name('orden.reportes.dineroClientes');
+
 
 
 

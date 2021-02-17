@@ -128,6 +128,7 @@
   <table class="table">
           <thead class="thead-dark">
             <tr>
+              <th scope="col">Cod Orden</th>
               <th scope="col">Sala</th>
               <th scope="col">Mesa</th>
               <th scope="col"># Platos</th>
@@ -142,8 +143,24 @@
       {{--     varQuePasamos  nuevoNombre                        --}}
       @foreach($ordenes as $itemOrden)
             <tr>
+              
+              <td> 
+                <h1>
+                  <span class="grey">{{$itemOrden->codOrden }}</span>
+                  
+                </h1>
+                 
+                
+              </td>
               <td>{{$itemOrden->getNombreSala()  }}</td>
-              <td style="text-align: center">{{$itemOrden->getNroMesaEnSala()  }}</td>
+              <td style="text-align: center">
+                <h1>
+                  <span class="red">{{$itemOrden->getNroMesaEnSala()  }}</span>
+                  
+                </h1>
+                
+              
+              </td>
               <td>  {{$itemOrden->listarProductos()}}      </td>
              
               <td style="text-align: center">{{$itemOrden->getHoraCreacion()  }}</td>
@@ -190,6 +207,9 @@ input[type='checkbox'] {
 input[type='checkbox']:checked {
     background: #abd;
 }
+
+/* Círculos de colores numerados */
+
 
 
 </style>

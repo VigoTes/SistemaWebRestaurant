@@ -12278,13 +12278,13 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .main-header::bef
 
 .sidebar-dark-blue .nav-sidebar > .nav-item > .nav-link.active,
 .sidebar-light-blue .nav-sidebar > .nav-item > .nav-link.active {
-  background-color: #007bff;
+  background-color: #00ffff;
   color: #ffffff;
 }
 
 .sidebar-dark-blue .nav-sidebar.nav-legacy > .nav-item > .nav-link.active,
 .sidebar-light-blue .nav-sidebar.nav-legacy > .nav-item > .nav-link.active {
-  border-color: #007bff;
+  border-color: #00ffff;
 }
 
 .sidebar-dark-indigo .nav-sidebar > .nav-item > .nav-link.active,

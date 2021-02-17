@@ -66,10 +66,10 @@
 
 </script>
 
-<form method="POST" action="{{ route('orden.store')}}">
+<form method="POST" action="{{ route('orden.store')}}"  onsubmit="return validar()">
 @csrf
 <div class="card">
-    <input id="codMesa" type="hidden" name="codMesa" value="{{ $mesa->codMesa }}" >
+    <input id="codMesa" type="hidden" name="codMesa" value="{{ $mesa->codMesa }}">
     {{-- <input id="codMeseroActual" type="hidden" name="codMeseroActual" value="{{ App\Empleado::getEmpleadoLogeado()->codEmpleado}}" >
      --}}
     <div class="card-header ui-sortable-handle" style="cursor: move;">
@@ -345,7 +345,19 @@
 
 
 
-
+<script type="text/javascript"> 
+          
+    function validar() {
+      if (detalleventa.length == 0 || cont==0){
+        alert("Ingrese productos al pedido");
+      }
+      else{
+        return true; // enviamos el formulario	
+      }
+      return false;
+    }
+    
+  </script>
 
 
 

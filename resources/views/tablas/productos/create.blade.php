@@ -5,7 +5,7 @@
 
   <h1> CREAR PRODUCTO</h1>
 
-<form method = "POST" action = "{{route('producto.store')}}"  >
+<form method = "POST" action = "{{route('producto.store')}}"  onsubmit="return validar()"  >
     @csrf   
       <div class="form-group">
         <label for="nombre">Nombre:</label>
@@ -64,5 +64,30 @@
 
 
 </div>
+<script type="text/javascript"> 
+          
+  function validar() {
+    if (document.getElementById("nombre").value == ""){
+      alert("Ingrese nombre del producto");
+      $("#nombre").focus();
+    }
+    else if (document.getElementById("codCategoria").value == "0"){
+      alert("Seleccione tipo de categoria");
+    }
+    else if(document.getElementById("descripcion").value == ""){
+      alert("Ingrese descripcion del producto");
+      $("#descripcion").focus();
+    }
+    else if(document.getElementById("precio").value == ""){
+      alert("Ingrese precio del empleado");
+      $("#precio").focus();
+    }
+    else{
+      return true; // enviamos el formulario	
+    }
+    return false;
+  }
+  
+</script>
 
 @endsection

@@ -2,7 +2,7 @@
 @section('contenido')
     <div class="container">
         <h1>Editar Registro</h1>    
-    <form method="POST" action="{{ route('producto.update',$producto->codProducto)}}">
+    <form method="POST" action="{{ route('producto.update',$producto->codProducto)}}"  onsubmit="return validar()">
             @method('put')
             @csrf
             <div class="form-row">
@@ -61,6 +61,32 @@
     
             <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Grabar</button>
         <a href="{{ route('producto.index') }}" class="btn btn-danger"><i class="fas fa-ban"></i> Cancelar</a>
-        </form>
+    </form>
     </div>
+
+    <script type="text/javascript"> 
+          
+        function validar() {
+          if (document.getElementById("nombre").value == ""){
+            alert("Ingrese nombre del producto");
+            $("#nombre").focus();
+          }
+          else if (document.getElementById("codCategoria").value == "0"){
+            alert("Seleccione tipo de categoria");
+          }
+          else if(document.getElementById("descripcion").value == ""){
+            alert("Ingrese descripcion del producto");
+            $("#descripcion").focus();
+          }
+          else if(document.getElementById("precio").value == ""){
+            alert("Ingrese precio del empleado");
+            $("#precio").focus();
+          }
+          else{
+            return true; // enviamos el formulario	
+          }
+          return false;
+        }
+        
+    </script>
 @endsection

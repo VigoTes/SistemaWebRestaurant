@@ -1,7 +1,7 @@
 @extends('layout.plantilla')
 @section('contenido')
 
-
+<br>
 <div class="container">
 
   <form method = "POST" action = "{{ route('orden.pagar',$orden->codOrden) }}" onsubmit="return validar()" >
@@ -67,10 +67,10 @@
         <div class="w-100"></div>
         <div class="col">
           <div class="form-group" id="divNombres">
-            <label for="nombre">Nombre del Cliente</label>
+            <label for="nombres">Nombre del Cliente</label>
             <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombres" name="nombres" placeHolder="Ingrese nombres">
             
-            @error('nombre')
+            @error('nombres')
                 <span class = "invalid-feedback" role ="alert">
                     <strong>{{ $message }} </strong>
                 </span>
@@ -79,10 +79,10 @@
         </div>  
         <div class="col">
           <div class="form-group" id="divApellidos">
-            <label for="apellido">Apellidos del Cliente</label>
-            <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="apellidos" name="apellidos" placeHolder="Ingrese apellidos">
+            <label for="apellidos">Apellidos del Cliente</label>
+            <input type="text" class="form-control @error('apellidos') is-invalid @enderror" id="apellidos" name="apellidos" placeHolder="Ingrese apellidos">
             
-            @error('nombre')
+            @error('apellidos')
                 <span class = "invalid-feedback" role ="alert">
                     <strong>{{ $message }} </strong>
                 </span>
@@ -141,7 +141,7 @@
                     
             
             <div class="form-group">
-              <label for="tipoCDP">Sencillo del Cliente</label>
+              <label for="sencilloCliente">Sencillo del Cliente</label>
               <input class="form-control" type="number" style="width: 150px;"
               id="sencilloCliente" name="sencilloCliente" step="0.01">
             </div>
@@ -152,7 +152,7 @@
     
     
           <div class="form-group">
-            <label for="tipoCDP">Sencillo devuelto</label>
+            <label for="sencilloDevuelto">Sencillo devuelto</label>
             <input class="form-control" type="number" style="width: 150px;"
              id="sencilloDevuelto" name="sencilloDevuelto" readonly="readonly">
           </div>
@@ -230,7 +230,11 @@
 
     function cambioComprobante(){
       var x = document.getElementById("divNroSerie");
-
+      if( $('#tipoCDP').val() == '-1')
+        {
+          $('#nroSerie').val('');
+          return false;
+        }
         $.get('/obtenerParametro/'+$('#tipoCDP').val(), function(data)
             {    
               
@@ -283,14 +287,61 @@
 
     function validar(){
       msj ='';
-      if($('#nroSerie').val()==1 && $('#nroSerie').val()==2 )      
+      if($('#medioPago').val()==1 && $('#tipoPago').val()==2 )      
         {
-          msj='';
+          msj='¡No se puede pagar por cuotas en efectivo, ingrese tarjeta!';
 
         }
 
+        if($('#medioPago').val()== '-1')    
+          msj='¡Ingrese un medio de pago!';
 
+        if($('#tipoCDP').val()== '-1')    
+          msj='¡Ingrese un tipo de comprobante de pago!';
+
+
+
+        if($('#medioPago').val()== '2') //si se paga con tarjeta    
+        {
+          if($('#tipoPago').val() == '-1')  
+            msj='!Ingrese un tipo de pago!';
+          if($('#tarjeta').val() == '')  
+            msj='!Ingrese nro de tarjeta!';
+
+
+        }
+
+        if($('#medioPago').val()== '1') //si se paga con efectivo    
+            $('#tipoPago').val('1');   //seteamos el tipo pago en Directo  
       
+
+        sencillo =  parseFloat ($('#sencilloCliente').val() );
+        montoOrden = parseFloat ($('#montoOrden').val() );
+        console.log('senc='+sencillo+' monto'+montoOrden);
+        if( sencillo < montoOrden)
+          msj = 'El sencillo debe ser mayor que el monto.';
+
+
+
+        if(sencillo== '' || sencillo <0 )    
+          msj='Ingrese una cantidad de sencillo válida.';
+
+        clientes = $('#clientes').val()
+          if( clientes== '-1' ){ //si va a ingresar un cliente
+            if($('#nombre').val()== '') msj = 'Ingrese nombres.';
+            if($('#apellidos').val()== '') msj = 'Ingrese apellidos.';
+            if($('#DNI').val()== '') msj = 'Ingrese un DNI';
+            
+          }
+        
+
+      if(msj!=''){
+        alert(msj);
+        return false;
+      }
+
+
+      return true;
     }
 
 

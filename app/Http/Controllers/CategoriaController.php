@@ -39,8 +39,8 @@ class CategoriaController extends Controller
      */
     public function create()
     {
-        $macros=MacroCategoria::all();
-        return view ('tablas.categorias.create',compact('macros'));
+        //$macros=MacroCategoria::all();
+        return view ('tablas.categorias.create');
     }
     
 
@@ -75,7 +75,7 @@ class CategoriaController extends Controller
                 );
                 $categoria = new Categoria();
                 $categoria->nombre=$request->nombre;
-                $categoria->codMacroCategoria=$request->codMacroCategoria;
+                //$categoria->codMacroCategoria=$request->codMacroCategoria;
                 $categoria->estado=1;
                 $categoria->save();
                     return redirect()->route('categoria.index')->with('datos','Registro nuevo guardado');
@@ -131,7 +131,7 @@ class CategoriaController extends Controller
         $categoria=Categoria::find($id);
         //var_dump($categoria->nombre);
         $categoria->nombre=$request->nombre;
-        $categoria->codMacroCategoria=$request->codMacroCategoria;
+        //$categoria->codMacroCategoria=$request->codMacroCategoria;
         //var_dump($categoria->nombre);
         
         $categoria->save();
