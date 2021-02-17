@@ -19,5 +19,12 @@ class Mesa extends Model
         return $this->hasOne('App\Sala','codSala','codSala');
     }
     
+    public function seEdita(){
+        $ordenes=Orden::where('codMesa','=',$this->codMesa)->where('codEstado','<',4)->get();
+        if(count($ordenes)==0){
+            return 0;
+        }
+        return 1;
+    }
     
 }

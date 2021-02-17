@@ -150,3 +150,6 @@ i.normal {
 {
 	background-color: #591616;
 }
+[class*=sidebar-dark] .user-panel {
+  border-bottom: 1px solid #3b0f00;
+}

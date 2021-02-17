@@ -436,7 +436,7 @@ class OrdenController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return redirect()->route('orden.listarSalas')->with('datos','Orden actualizada exitosamente!');
     }
 
     /**
@@ -526,6 +526,20 @@ class OrdenController extends Controller
         $meseros=Empleado::where('codTipoEmpleado','=',3)->get();
 
         return view('modulos.mozo.crearOrden',compact('mesa','categorias1','productos','meseros'));
+    }
+
+    public function editarOrdenMesa($id){
+        $mesa=Mesa::find($id);
+        $ordenes=Orden::where('codMesa','=',$id)->where('codEstado','<',4)->get();
+        $orden=$ordenes[0];
+        $detalles=DetalleOrden::where('codOrden','=',$orden->codOrden)->get();
+        $categorias1=Categoria::where('estado','=',1)->get();
+        $productos=Producto::where('estado','=',1)
+            ->where('menuDeHoy','=','1')    
+            ->get();
+        $meseros=Empleado::where('codTipoEmpleado','=',3)->get();
+
+        return view('modulos.mozo.editarOrden',compact('mesa','categorias1','productos','meseros','orden','detalles'));
     }
 
 

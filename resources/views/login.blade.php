@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Restaurant</title>
+    <link rel="shortcut icon" type="image/ico" href="/ICONO.ico" />
 
   
   <!-- PARA EL MENSAJE DE ERROR -->

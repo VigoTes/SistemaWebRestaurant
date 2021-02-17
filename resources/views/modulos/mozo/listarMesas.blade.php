@@ -82,7 +82,11 @@
               @if($itemmesa->estado==1)
                 <a href="/orden/mesa/{{$itemmesa->codMesa}}"><img src="/img/mesa.png" /></a>
               @else
+                @if($itemmesa->seEdita()==0)
                 <img src="/img/mesaBloqueada.png" />
+                @else
+                <a href="/editarOrden/mesa/{{$itemmesa->codMesa}}"><img src="/img/mesaBloqueada.png" /></a>
+                @endif
               @endif
               <span>MESA {{$itemmesa->nroEnSala}}</span>
             </li>

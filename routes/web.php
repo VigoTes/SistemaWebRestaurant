@@ -80,7 +80,15 @@ Route::get('/Ordenes/Mesero/','OrdenController@listarParaMesero')->name('orden.l
 
 Route::get('/Salas/Mesero','MesaController@listarMesa')->name('orden.listarSalas');
 
+/* CRUD SALAS */
+Route::get('/Sala/eliminar/{id}','SalaController@eliminar')->name('sala.eliminar');
+Route::get('/Mesa/eliminar/{id}','SalaController@eliminarMesa')->name('mesa.eliminar');
+Route::post('/Mesa/store/','SalaController@storeMesa')->name('mesa.store');
 
+Route::resource('sala','SalaController');
+
+
+/* CRUD MESAS */
 
 // funcion para pasar al siguiente estado
 Route::get ('orden/{id}/next','OrdenController@siguiente')->name('orden.next');
@@ -97,6 +105,7 @@ Route::get('/visualizarRegistro','CajaController@visualizarRegistro');
 Route::get('/visualizarOrdenes/{id}','CajaController@visualizarOrdenesDeRegistro');
 
 Route::get('/orden/mesa/{id}','OrdenController@ordenMesa');
+Route::get('/editarOrden/mesa/{id}','OrdenController@editarOrdenMesa');
 Route::post('/listarProductosCategoria/{id}','ProductoController@listarProductosCategoria');
 
 Route::get('/buscarProducto/{id}','ProductoController@buscarProducto');

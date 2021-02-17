@@ -19,4 +19,10 @@ class Sala extends Model
         return $this->hasMany('App\Mesa','codSala','codSala');
 
     }
+
+    public function nroMesas(){
+        $listaMesas = Mesa::where('codSala','=',$this->codSala)->get();
+
+        return count($listaMesas);
+    }
 }

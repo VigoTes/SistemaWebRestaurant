@@ -16,6 +16,9 @@ class CajaController extends Controller
 {
     const PAGINATION = '20';
 
+
+    //despliega la vista de gastos de mi periodo, si ya lo inicie
+    // o la vista de apertura si aun no
     public function index()
     {
         date_default_timezone_set('America/Lima');
@@ -110,7 +113,7 @@ class CajaController extends Controller
        
     }
 
-
+    /* DESPLIEGA LA VISTA PARA CERRAR LA CAJA */
     public function cerrarCaja(){
 
 
@@ -124,6 +127,10 @@ class CajaController extends Controller
             /* $registros=RegistroCaja::where('codEmpleadoCajero','=',Auth::user()->empleado->codEmpleado)->where('estado','=',1)->get();
             $registro=$registros[0];
              */
+
+            if($registro=='0')
+                return redirect()->route('caja.index');
+
             
             $fechaHoraActual=new DateTime();
 
@@ -156,7 +163,7 @@ class CajaController extends Controller
             $registroCaja=RegistroCaja::findOrFail($request->codRegistroCaja);
             $registroCaja->fechaHoraCierre=new DateTime();
             $registroCaja->diferencia=$request->saldoCierre-$request->saldoReal;
-    
+            
             
             $registroCaja->saldoCierre = $request->saldoCierre;
             

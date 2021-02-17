@@ -67,21 +67,20 @@
  {{--  {{route('bienvenido')}} --}}
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="" class="brand-link">
-      <img src="/LogoRestaurant.jpg"
+    <!-- Brand Logo
+    <a href="" class="brand-link"> -->
+      <!--<img src="/LogoRestaurant.jpg"
            alt="AdminLTE Logo"
            class="brand-image img-circle elevation-3"
            style="opacity: .8">
       <span class="brand-text font-weight-light">
-        <b>
-          {{App\Empresa::getEmpresa()->nombre}}
-
-
+         <b>
+         {{--  {{App\Empresa::getEmpresa()->nombre}}--}}
         </b>
-        
-      </span>
-    </a>
+        -->
+        <img href="https://estaticos.muyinteresante.es/media/cache/1140x_thumb/uploads/images/gallery/59c4f5655bafe82c692a7052/gato-marron_0.jpg" width="234" height="100" >
+<!--
+    </a>-->
 
 
     <!-- Sidebar -->
@@ -193,6 +192,13 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{{route('sala.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Salas</p>
+                </a>
+              </li>
+              
+              <li class="nav-item">
                 <a href="{{route('producto.verMenu')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Menú de Hoy</p>
@@ -201,7 +207,7 @@
               <li class="nav-item">
                 <a href="/visualizarRegistro" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Ver Registro</p>
+                  <p>Estado de Cajas</p>
                 </a>
               </li>  
 
@@ -306,7 +312,7 @@
       
       .
     </strong> 
-    Derechos Reservados.
+     Franco Valladolid | Gutierrez Uriol | Rodríguez Paredes | Vigo Briones
   </footer>
 
   <!-- Control Sidebar -->
@@ -371,7 +377,7 @@
 
 
   span.red {
-  background: red;
+  background:#932425;
    border-radius: 0.8em;
   -moz-border-radius: 0.8em;
   -webkit-border-radius: 0.8em;

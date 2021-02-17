@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class MesaController extends Controller
 {
+
+    
+
+
+
+
     public function listarMesa()
     {
         $mesas=Mesa::all();
