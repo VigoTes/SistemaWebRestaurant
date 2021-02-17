@@ -287,7 +287,7 @@ class OrdenController extends Controller
             Parametro::pasarASiguiente($request->tipoCDP);
             DB::commit();        
             return redirect()->route('orden.listarParaCaja')
-            ->with('datos','Orden N°'.$orden->codOrden.' Pagada');
+            ->with('datos','Orden N° '.$orden->codOrden.' Pagada');
 
 
         } catch (\Throwable $th) {
@@ -559,7 +559,7 @@ class OrdenController extends Controller
 
         $nombreNuevoEstado = $orden->getEstado(); 
 
-        return Redirect::back()->with('datos','Orden actualizada a'.$nombreNuevoEstado);
+        return Redirect::back()->with('datos','Orden actualizada a '.$nombreNuevoEstado);
         return redirect()
                 ->route('orden.listarParaCocina')
                 ->with('datos','Orden Actualizada a '.$nombreNuevoEstado);
