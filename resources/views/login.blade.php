@@ -16,7 +16,7 @@
 
  
 </head>
-<body background="fondoLogin.jpg">
+<body background="/fondoLogin.jpg">
 
 
 <form method="POST" action="{{route('user.logearse')}}" onsubmit="return validar()">
