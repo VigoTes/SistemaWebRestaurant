@@ -77,7 +77,7 @@
         <div class="tab-pane fade" id="mesa{{$itemsala->codSala}}" role="tabpanel" aria-labelledby="mesa{{$itemsala->codSala}}-tab">
         @endif
           <ul class="users-list clearfix">
-            @foreach($itemsala->mesa as $itemmesa)
+            @foreach($itemsala->mesasDeLaSala() as $itemmesa)
             <li style="width: 12%">
               @if($itemmesa->estado==1)
                 <a href="/orden/mesa/{{$itemmesa->codMesa}}"><img src="/img/mesa.png" /></a>

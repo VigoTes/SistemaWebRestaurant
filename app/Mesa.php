@@ -20,8 +20,8 @@ class Mesa extends Model
     }
     
     public function seEdita(){
-        $ordenes=Orden::where('codMesa','=',$this->codMesa)->where('codEstado','<',4)->get();
-        if(count($ordenes)==0){
+        $ordenes=Orden::where('codMesa','=',$this->codMesa)->where('codEstado','=',1)->get();
+        if(count($ordenes)<=0){
             return 0;
         }
         return 1;

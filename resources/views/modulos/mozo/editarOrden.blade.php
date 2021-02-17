@@ -68,6 +68,7 @@
 
 
 <form method="POST" action="{{ route('orden.update',$orden->codOrden)}}"  onsubmit="return validar()">
+  @method('put')
 @csrf
 <div class="card">
     <input id="codOrden" type="hidden" name="codOrden" value="{{ $orden->codOrden }}">
@@ -157,7 +158,7 @@
             
             <div class="form-group">
               <label>Observaciones:</label>
-              <textarea class="form-control" id="txtobservaciones" name="txtobservaciones" rows="3" placeholder="Enter ..." style="margin-top: 0px; margin-bottom: 0px; height: 79px;"></textarea>
+              <textarea class="form-control" id="txtobservaciones" name="txtobservaciones" rows="3" placeholder="Enter ..." style="margin-top: 0px; margin-bottom: 0px; height: 79px;">{{$orden->observaciones}}</textarea>
             </div>
             <div class="text-right">  
               <div  id="guardar">
@@ -396,6 +397,7 @@
         echo '<script type="text/javascript"> agregarDetalle3('.$itemdetalle->producto->codProducto.','.$itemdetalle->producto->precioActual.',"'.$itemdetalle->producto->nombre.'"); </script>';
         echo '<script type="text/javascript"> $(\'#cantidad'.$j.'\').val('.$itemdetalle->cantidad.'); </script>';
         echo '<script type="text/javascript"> cambioCantidad('.$itemdetalle->codProducto.','.$j.'); </script>';
+        $j++;
     }
 
 ?>

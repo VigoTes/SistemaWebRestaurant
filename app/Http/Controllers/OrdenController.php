@@ -436,6 +436,56 @@ class OrdenController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $orden=Orden::find($id);
+        $obs = $request->txtobservaciones;
+        if(is_null($obs)) $obs='';
+        $orden->observaciones=$obs;
+        $orden->save();
+        
+        $detalles=DetalleOrden::where('codOrden','=',$id)->get();
+        foreach ($detalles as $itemdetalle) {
+            $itemdetalle->delete();
+        }
+
+        /* Grabar Detalle   */
+        $producto_id = $request->get('cod_producto');
+        $cantidad = $request->get('cantidad');
+        $pventa = $request->get('pventa');            
+
+        $cont = 0;
+
+        while ($cont<count($producto_id)) {
+            $detalle=new DetalleOrden();
+            $detalle->codOrden=$orden->codOrden;
+            $detalle->cantidad=$cantidad[$cont];
+            $detalle->precio=$pventa[$cont];
+            $detalle->codProducto=$producto_id[$cont];
+            $detalle->save();
+            $cont=$cont+1;
+        }
+        /*
+        while ($cont<count($producto_id)) {
+            $band=0;
+            foreach ($detalles as $itemdetalle) {
+                if($producto_id[$cont]==$itemdetalle->codProducto){
+                    $band=1;
+                    $itemdetalle->cantidad=$cantidad[$cont];
+                    $itemdetalle->save();
+                }
+            }
+            if($band==0){
+                $detalle=new DetalleOrden();
+                $detalle->codOrden=$orden->codOrden;
+                $detalle->cantidad=$cantidad[$cont];
+                $detalle->precio=$pventa[$cont];
+                $detalle->codProducto=$producto_id[$cont];
+                $detalle->save();
+            }
+            $cont=$cont+1;
+        }
+        */
+
+          
         return redirect()->route('orden.listarSalas')->with('datos','Orden actualizada exitosamente!');
     }
 
@@ -530,7 +580,7 @@ class OrdenController extends Controller
 
     public function editarOrdenMesa($id){
         $mesa=Mesa::find($id);
-        $ordenes=Orden::where('codMesa','=',$id)->where('codEstado','<',4)->get();
+        $ordenes=Orden::where('codMesa','=',$id)->where('codEstado','=',1)->get();
         $orden=$ordenes[0];
         $detalles=DetalleOrden::where('codOrden','=',$orden->codOrden)->get();
         $categorias1=Categoria::where('estado','=',1)->get();

@@ -16,8 +16,14 @@ class Sala extends Model
     protected $fillable = ['nombre'];
 
     public function mesa(){
+        
         return $this->hasMany('App\Mesa','codSala','codSala');
 
+    }
+
+    public function mesasDeLaSala(){
+        $mesas = Mesa::where('codSala','=',$this->codSala)->orderBy('nroEnSala')->get();
+        return $mesas;
     }
 
     public function nroMesas(){
